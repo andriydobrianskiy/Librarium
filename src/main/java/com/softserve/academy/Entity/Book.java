@@ -71,28 +71,37 @@ public class Book {
         if (this == obj) {
             return true;
         }
-
-        if ((obj == null) || (this.getClass() != obj.getClass())) {
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
 
         Book book = (Book) obj;
-        return (id == book.getId()) &&
-            (createdAt.equals(book.getCreatedAt())) &&
-            (creatorId == book.getCreatorId()) &&
-            (name.equals(book.getName())) &&
-            (description.equals(book.getDescription())) &&
-            (pageQuantity == book.getPageQuantity());
+
+        if (id != book.id) {
+            return false;
+        }
+        if (creatorId != book.creatorId) {
+            return false;
+        }
+        if (pageQuantity != book.pageQuantity) {
+            return false;
+        }
+        if (createdAt != null ? !createdAt.equals(book.createdAt) : book.createdAt != null) {
+            return false;
+        }
+        if (name != null ? !name.equals(book.name) : book.name != null) {
+            return false;
+        }
+        return description != null ? description.equals(book.description) : book.description == null;
     }
 
     @Override
     public int hashCode() {
-        int result = 17;
-        result = 31 * result + id;
-        result = 31 * result + createdAt.hashCode();
+        int result = id;
+        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
         result = 31 * result + creatorId;
-        result = 31 * result + name.hashCode();
-        result = 31 * result + description.hashCode();
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + pageQuantity;
         return result;
     }
