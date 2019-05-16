@@ -97,35 +97,50 @@ public class Orders {
         if (this == obj) {
             return true;
         }
-
-        if ((obj == null) || (this.getClass() != obj.getClass())) {
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
 
         Orders orders = (Orders) obj;
-        return (id == orders.getId()) &&
-            (createdAt.equals(orders.getCreatedAt())) &&
-            (creatorId == orders.getCreatorId()) &&
-            (readerId == orders.getReaderId()) &&
-            (bookId == orders.getBookId()) &&
-            (copyId == orders.getCopyId()) &&
-            (takeDate.equals(orders.getTakeDate())) &&
-            (returnDate.equals(orders.getReturnDate())) &&
-            (deadlineDate.equals(orders.getDeadlineDate()));
+
+        if (id != orders.id) {
+            return false;
+        }
+        if (creatorId != orders.creatorId) {
+            return false;
+        }
+        if (readerId != orders.readerId) {
+            return false;
+        }
+        if (bookId != orders.bookId) {
+            return false;
+        }
+        if (copyId != orders.copyId) {
+            return false;
+        }
+        if (createdAt != null ? !createdAt.equals(orders.createdAt) : orders.createdAt != null) {
+            return false;
+        }
+        if (takeDate != null ? !takeDate.equals(orders.takeDate) : orders.takeDate != null) {
+            return false;
+        }
+        if (returnDate != null ? !returnDate.equals(orders.returnDate) : orders.returnDate != null) {
+            return false;
+        }
+        return deadlineDate != null ? deadlineDate.equals(orders.deadlineDate) : orders.deadlineDate == null;
     }
 
     @Override
     public int hashCode() {
-        int result = 17;
-        result = 31 * result + id;
-        result = 31 * result + createdAt.hashCode();
+        int result = id;
+        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
         result = 31 * result + creatorId;
         result = 31 * result + readerId;
         result = 31 * result + bookId;
         result = 31 * result + copyId;
-        result = 31 * result + takeDate.hashCode();
-        result = 31 * result + returnDate.hashCode();
-        result = 31 * result + deadlineDate.hashCode();
+        result = 31 * result + (takeDate != null ? takeDate.hashCode() : 0);
+        result = 31 * result + (returnDate != null ? returnDate.hashCode() : 0);
+        result = 31 * result + (deadlineDate != null ? deadlineDate.hashCode() : 0);
         return result;
     }
 }
