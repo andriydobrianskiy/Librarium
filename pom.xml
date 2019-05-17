@@ -37,7 +37,21 @@
       <artifactId>c3p0</artifactId>
       <version>0.9.1.2</version>
     </dependency>
+	<!-- for web servlet -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>3.1.0</version>
+      <scope>provided</scope>
+    </dependency>
 
+    <!-- Some containers like Tomcat don't have jstl library -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>jstl</artifactId>
+      <version>1.2</version>
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
   <build>
     <finalName>librarium</finalName>
@@ -50,6 +64,16 @@
           <target>6</target>
         </configuration>
       </plugin>
+	  <plugin>
+          <groupId>org.apache.tomcat.maven</groupId>
+          <artifactId>tomcat6-maven-plugin</artifactId>
+          <version>2.2</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.tomcat.maven</groupId>
+          <artifactId>tomcat7-maven-plugin</artifactId>
+          <version>2.2</version>
+        </plugin>
     </plugins>
   </build>
 </project>
