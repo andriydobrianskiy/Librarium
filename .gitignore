@@ -1,3 +1,6 @@
+# for user-dependent db connectivity properties
+db.properties
+
 # Compiled class file
 *.class
 .idea/
