@@ -10,7 +10,7 @@ import java.sql.Date;
 public class Book {
     private int id;
     private Date createdAt;
-    private int creatorId;
+    private User creatorId;
     private String name;
     private String description;
     private int pageQuantity;
@@ -34,11 +34,11 @@ public class Book {
         this.createdAt = createdAt;
     }
 
-    public int getCreatorId() {
+    public User getCreatorId() {
         return creatorId;
     }
 
-    public void setCreatorId(int creatorId) {
+    public void setCreatorId(User creatorId) {
         this.creatorId = creatorId;
     }
 
@@ -80,13 +80,13 @@ public class Book {
         if (id != book.id) {
             return false;
         }
-        if (creatorId != book.creatorId) {
-            return false;
-        }
         if (pageQuantity != book.pageQuantity) {
             return false;
         }
         if (createdAt != null ? !createdAt.equals(book.createdAt) : book.createdAt != null) {
+            return false;
+        }
+        if (creatorId != null ? !creatorId.equals(book.creatorId) : book.creatorId != null) {
             return false;
         }
         if (name != null ? !name.equals(book.name) : book.name != null) {
@@ -99,7 +99,7 @@ public class Book {
     public int hashCode() {
         int result = id;
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
-        result = 31 * result + creatorId;
+        result = 31 * result + (creatorId != null ? creatorId.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + pageQuantity;
