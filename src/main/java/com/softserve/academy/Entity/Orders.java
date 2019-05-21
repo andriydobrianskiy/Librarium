@@ -10,10 +10,10 @@ import java.sql.Date;
 public class Orders {
     private int id;
     private Date createdAt;
-    private int creatorId;
-    private int readerId;
-    private int bookId;
-    private int copyId;
+    private User creatorId;
+    private User reader;
+    private Book book;
+    private Copy copy;
     private Date takeDate;
     private Date returnDate;
     private Date deadlineDate;
@@ -36,36 +36,36 @@ public class Orders {
         this.createdAt = createdAt;
     }
 
-    public int getCreatorId() {
+    public User getCreatorId() {
         return creatorId;
     }
 
-    public void setCreatorId(int creatorId) {
+    public void setCreatorId(User creatorId) {
         this.creatorId = creatorId;
     }
 
-    public int getReaderId() {
-        return readerId;
+    public User getReader() {
+        return reader;
     }
 
-    public void setReaderId(int readerId) {
-        this.readerId = readerId;
+    public void setReader(User reader) {
+        this.reader = reader;
     }
 
-    public int getBookId() {
-        return bookId;
+    public Book getBook() {
+        return book;
     }
 
-    public void setBookId(int bookId) {
-        this.bookId = bookId;
+    public void setBook(Book book) {
+        this.book = book;
     }
 
-    public int getCopyId() {
-        return copyId;
+    public Copy getCopy() {
+        return copy;
     }
 
-    public void setCopyId(int copyId) {
-        this.copyId = copyId;
+    public void setCopy(Copy copy) {
+        this.copy = copy;
     }
 
     public Date getTakeDate() {
@@ -93,32 +93,32 @@ public class Orders {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
         }
-        if (obj == null || getClass() != obj.getClass()) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
-        Orders orders = (Orders) obj;
+        Orders orders = (Orders) o;
 
         if (id != orders.id) {
             return false;
         }
-        if (creatorId != orders.creatorId) {
-            return false;
-        }
-        if (readerId != orders.readerId) {
-            return false;
-        }
-        if (bookId != orders.bookId) {
-            return false;
-        }
-        if (copyId != orders.copyId) {
-            return false;
-        }
         if (createdAt != null ? !createdAt.equals(orders.createdAt) : orders.createdAt != null) {
+            return false;
+        }
+        if (creatorId != null ? !creatorId.equals(orders.creatorId) : orders.creatorId != null) {
+            return false;
+        }
+        if (reader != null ? !reader.equals(orders.reader) : orders.reader != null) {
+            return false;
+        }
+        if (book != null ? !book.equals(orders.book) : orders.book != null) {
+            return false;
+        }
+        if (copy != null ? !copy.equals(orders.copy) : orders.copy != null) {
             return false;
         }
         if (takeDate != null ? !takeDate.equals(orders.takeDate) : orders.takeDate != null) {
@@ -134,10 +134,10 @@ public class Orders {
     public int hashCode() {
         int result = id;
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
-        result = 31 * result + creatorId;
-        result = 31 * result + readerId;
-        result = 31 * result + bookId;
-        result = 31 * result + copyId;
+        result = 31 * result + (creatorId != null ? creatorId.hashCode() : 0);
+        result = 31 * result + (reader != null ? reader.hashCode() : 0);
+        result = 31 * result + (book != null ? book.hashCode() : 0);
+        result = 31 * result + (copy != null ? copy.hashCode() : 0);
         result = 31 * result + (takeDate != null ? takeDate.hashCode() : 0);
         result = 31 * result + (returnDate != null ? returnDate.hashCode() : 0);
         result = 31 * result + (deadlineDate != null ? deadlineDate.hashCode() : 0);
