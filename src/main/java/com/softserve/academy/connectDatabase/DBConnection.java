@@ -1,7 +1,6 @@
 package com.softserve.academy.connectDatabase;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
-import com.softserve.academy.Entity.User;
 
 import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
@@ -10,48 +9,34 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import com.softserve.academy.util.PropertiesUtil;
 import org.apache.log4j.Logger;
+import java.util.Properties;
 
 public class DBConnection implements InterfaceDataBase {
     private static final Logger LOGGER = Logger.getLogger(DBConnection.class);
 
-    public Connection connection;
+    private static final Properties DB_PROPERTIES = PropertiesUtil.getProperties();
 
-    public static final String DB_DRIVERCLASS = "jdbc:mysql://localhost/test";
-    public static String serverName = getServerName();
+    private static final String DB_URL = DB_PROPERTIES.getProperty("jdbc.url");
+    private static final String DB_USER = DB_PROPERTIES.getProperty("jdbc.username");
+    private static final String DB_PASS = DB_PROPERTIES.getProperty("jdbc.password");
+    private static final String DB_DRIVERCLASS = DB_PROPERTIES.getProperty("jdbc.driverClassName");
 
-    public static String serverChatName = getServerChatName();
-    public static String databaseName = "Librarium";
+    private Connection connection;
 
     private static ComboPooledDataSource dataSource;
 
-
-    public static String URL;
-
-    public void setServerChatName(String serverName) {
-        DBConnection.serverChatName = serverName;
-    }
-
-    public static String getServerChatName() {
-        return serverChatName;
-    }
-
-    public void setServerName(String serverName) {
-        DBConnection.serverName = serverName;
-    }
-
-    public static String getServerName() {
-        return serverName;
-    }
 
     private void createPoolConnections() {
         try {
             dataSource = new ComboPooledDataSource();
 
-            dataSource.setUser(User.getName());
+            dataSource.setUser(DB_USER);
             dataSource.setDriverClass(DB_DRIVERCLASS);
-            dataSource.setPassword(User.getPassword());
-            dataSource.setJdbcUrl(URL);
+            dataSource.setPassword(DB_PASS);
+            dataSource.setJdbcUrl(DB_URL);
             dataSource.setMinPoolSize(3);
             dataSource.setMaxPoolSize(500);
             dataSource.setAcquireIncrement(5);
@@ -62,11 +47,10 @@ public class DBConnection implements InterfaceDataBase {
     }
 
     @Override
-    public boolean connect(String url) {
+    public boolean connect() {
         try {
-            this.URL = url;
             Class.forName(DB_DRIVERCLASS);
-            connection = DriverManager.getConnection(url);
+            connection = DriverManager.getConnection(DB_URL);
             createPoolConnections();
 
             return true;
@@ -76,17 +60,17 @@ public class DBConnection implements InterfaceDataBase {
         }
 
     }
-    private synchronized boolean checkConnection() {
+    /*private synchronized boolean checkConnection() {
         try {
             Class.forName(DB_DRIVERCLASS);
-            connection = DriverManager.getConnection(URL);
+            connection = DriverManager.getConnection(DB_URL);
             return true;
         } catch (Exception ex) {
 
             return false;
         }
     }
-
+*/
     @Override
     public void disconnect() {
         try {
@@ -100,7 +84,7 @@ public class DBConnection implements InterfaceDataBase {
     public static DataSource getDataSource() {
         return dataSource;
     }
-
+/*
     @Override
     public boolean reconnect() {
 
@@ -115,11 +99,5 @@ public class DBConnection implements InterfaceDataBase {
         }
         return false;
     }
-
-    @Override
-    public boolean isDbConnected() {
-        return false;
-    }
-
-
+*/
 }
