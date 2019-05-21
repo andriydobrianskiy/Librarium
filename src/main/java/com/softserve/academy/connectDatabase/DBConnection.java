@@ -20,7 +20,7 @@ public class DBConnection implements InterfaceDataBase {
     public Connection connection;
 
 
-    public static final String DB_DRIVERCLASS = "jdbc:mysql://localhost/test";
+    public static final String DB_DRIVERCLASS = "jdbc:mysql://localhost:3306/librarium";
     public static String serverName = getServerName();
 
     public static String serverChatName = getServerChatName();
@@ -52,7 +52,7 @@ public class DBConnection implements InterfaceDataBase {
         try {
             dataSource = new ComboPooledDataSource();
 
-            dataSource.setUser(User.getName());
+            dataSource.setUser();
             dataSource.setDriverClass(DB_DRIVERCLASS);
             dataSource.setPassword(User.getPassword());
             dataSource.setJdbcUrl(URL);
