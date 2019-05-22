@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 
 public class PropertiesUtil {
     private static final Logger LOGGER = Logger.getLogger(PropertiesUtil.class);
-    private static final String PROPERTIES_FILENAME = "db.properties";
+    private static final String PROPERTIES_FILENAME = "/db.properties";
 
     public static Properties getProperties() {
         Properties properties = new Properties();

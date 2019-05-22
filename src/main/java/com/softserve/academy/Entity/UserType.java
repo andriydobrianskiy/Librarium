@@ -2,7 +2,7 @@ package com.softserve.academy.Entity;
 
 import java.util.Date;
 
-public class UserType extends Model {
+public class UserType {
     private int id;
     private String name;
 

@@ -3,7 +3,7 @@ package com.softserve.academy.Entity;
 import java.sql.Date;
 
 
-public class User extends Model{
+public class User {
     private int id;
     private String firstname;
     private String lastName;
@@ -22,7 +22,13 @@ public class User extends Model{
         this.id = id;
     }
 
+    public User() {}
 
+    public User(int id, String firstname, String lastName) {
+        this.id = id;
+        this.firstname = firstname;
+        this.lastName = lastName;
+    }
 
     public String getFirstname() {
         return firstname;
