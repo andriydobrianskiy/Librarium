@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BookDaoImpl implements BookDao {
-    private static final Logger LOGGER = Logger.getLogger(DBConnection.class);
+    private static final Logger LOGGER = Logger.getLogger(BookDaoImpl.class);
 
     public List<Book> getAllBooksByUser(User user)
     {
