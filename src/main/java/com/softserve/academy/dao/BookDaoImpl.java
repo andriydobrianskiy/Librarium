@@ -19,22 +19,21 @@ public class BookDaoImpl implements BookDao {
     {
         Book book;
         ArrayList<Book> bookArrayList = new ArrayList<>();
-        String query = "Select\n" +
-            "\t\tB.id, B.name, B.description, B.page_Quantity  \n" +
-            "from Orders AS O\n" +
-            "\t\t\tleft join user AS U ON U.id = O.reader_id\n" +
-            "            left join book AS B ON B.id = O.book_id\n" +
-            "WHERE U.id = ?";
+        String query = "select distinct book.id, book.name, book.description, book.page_quantity\n" +
+            "from orders left join user on user.id = orders.reader_id\n" +
+            "            left join book on book.id = orders.book_id\n" +
+            "            WHERE user.id = ?";
         try (Connection con = DBConnection.getDataSource().getConnection()) {
             PreparedStatement pst = con.prepareStatement(query);
             pst.setInt(1, user.getId());
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 book = new Book();
-                book.setId(rs.getInt(1));
-                book.setName(rs.getString(2));
-                book.setDescription(rs.getString(3));
-                book.setPageQuantity(rs.getInt(4));
+                book.setId(rs.getInt("book.id"));
+                book.setName(rs.getString("book.name"));
+                book.setDescription(rs.getString("book.description"));
+                book.setPageQuantity(rs.getInt("book.page_quantity"));
+
                 bookArrayList.add(book);
             }
         } catch (SQLException e) {
