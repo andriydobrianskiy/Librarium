@@ -47,7 +47,7 @@ public class DBConnection implements InterfaceDataBase {
     public boolean connect() {
         try {
             Class.forName(DB_DRIVERCLASS);
-            connection = DriverManager.getConnection(DB_URL);
+            connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
             createPoolConnections();
 
             return true;
