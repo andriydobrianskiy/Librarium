@@ -105,4 +105,14 @@ public class Book {
         result = 31 * result + pageQuantity;
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            ", pageQuantity=" + pageQuantity +
+            '}';
+    }
 }
