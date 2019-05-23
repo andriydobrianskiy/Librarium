@@ -8,4 +8,5 @@ import java.util.List;
 public interface BookDao {
     List<Book> getAllBooksByUser(User user);
     int getCountOfBookOrdersByBookId(int bookId);
+    int getAverageTimeOfReadingByBookId(int bookId);
 }

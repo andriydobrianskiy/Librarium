@@ -63,4 +63,23 @@ public class BookDaoImpl implements BookDao {
         return bookOrdersCount;
     }
 
+
+    public int getAverageTimeOfReadingByBookId(int bookId)
+    {
+        int daysCount = 0;
+        String query = "select round(avg(datediff(convert(orders.return_date, date), CONVERT(orders.take_date, date))), 0) as daysCount\n" +
+            "from orders left join book on book.id = orders.book_id\n" +
+            "where book.id = ?";
+        try (Connection con = DBConnection.getDataSource().getConnection()) {
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setInt(1, bookId);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                daysCount = rs.getInt("daysCount");
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return daysCount;
+    }
 }
