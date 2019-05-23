@@ -13,7 +13,8 @@ public class OrdersDaoImpl implements OrdersDao {
     private static final Logger LOGGER = Logger.getLogger(OrdersDaoImpl.class);
 
     public boolean insertOrders(Orders orders) {
-        String query = "INSERT INTO orders VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO orders(creatorId, reader, book, copy, takeDate, returnDate, deadlineDate)" +
+            " VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection con = DBConnection.getDataSource().getConnection()) {
             PreparedStatement pst = con.prepareStatement(query);
 

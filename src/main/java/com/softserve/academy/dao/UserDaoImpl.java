@@ -13,7 +13,8 @@ public class UserDaoImpl implements UserDao {
     private static final Logger LOGGER = Logger.getLogger(UserDaoImpl.class);
 
     public boolean insertUser(User user) {
-        String query = "INSERT INTO user VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO user(creatorId, firstname, lastName, userName, password, " +
+            "phone, address, birthday_date, contact_type_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection con = DBConnection.getDataSource().getConnection()) {
             PreparedStatement pst = con.prepareStatement(query);
 
