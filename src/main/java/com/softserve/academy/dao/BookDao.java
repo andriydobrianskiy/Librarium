@@ -9,4 +9,6 @@ public interface BookDao {
     List<Book> getAllBooksByUser(User user);
 
     boolean insertBook(Book book);
+    int getCountOfBookOrdersByBookId(int bookId);
+    int getAverageTimeOfReadingByBookId(int bookId);
 }
