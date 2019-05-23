@@ -20,14 +20,10 @@ public class CopyDaoImpl implements CopyDao {
         Book book;
         Copy copy;
         ArrayList<Copy> copyArrayList = new ArrayList<>();
-        String query = "select \n" +
-            "book.name, book.description, book.page_quantity, copy.id, copy.publication_year, " +
-            "copy.publishing_house, copy.available \n" +
-            "from \n" +
-            "  copy\n" +
-            "      left join book on book.id = copy.book_id\n" +
-            "where\n" +
-            "  book.id = ?";
+        String query = "select book.name, book.description, book.page_quantity, copy.id, \n" +
+            "\tcopy.publication_year, copy.publishing_house, copy.available \n" +
+            "from copy left join book on book.id = copy.book_id\n" +
+            "where book.id = ?";
         try (Connection con = DBConnection.getDataSource().getConnection()) {
             PreparedStatement pst = con.prepareStatement(query);
             pst.setInt(1, bookId);
@@ -35,15 +31,17 @@ public class CopyDaoImpl implements CopyDao {
             while (rs.next()) {
                 book = new Book();
                 copy = new Copy();
-                book.setName(rs.getString(1));
-                book.setDescription(rs.getString(2));
-                book.setPageQuantity(rs.getInt(3));
+
+                book.setId(bookId);
+                book.setName(rs.getString("book.name"));
+                book.setDescription(rs.getString("book.description"));
+                book.setPageQuantity(rs.getInt("book.page_quantity"));
 
                 copy.setBookId(book);
-                copy.setId(rs.getInt(4));
-                copy.setPublicationYear(rs.getInt(5));
-                copy.setPublishingHouse(rs.getString(6));
-                copy.setAvailable(rs.getBoolean(7));
+                copy.setId(rs.getInt("copy.id"));
+                copy.setPublicationYear(rs.getInt("copy.publication_year"));
+                copy.setPublishingHouse(rs.getString("copy.publishing_house"));
+                copy.setAvailable(rs.getBoolean("copy.available"));
 
                 copyArrayList.add(copy);
             }
