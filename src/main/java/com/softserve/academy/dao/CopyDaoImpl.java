@@ -18,8 +18,7 @@ import java.util.Map;
 public class CopyDaoImpl implements CopyDao {
     private static final Logger LOGGER = Logger.getLogger(CopyDaoImpl.class);
 
-    public List<Copy> getAllCopiesByBookId(int bookId)
-    {
+    public List<Copy> getAllCopiesByBookId(int bookId) {
         Book book;
         Copy copy;
         ArrayList<Copy> copyArrayList = new ArrayList<>();
@@ -55,8 +54,27 @@ public class CopyDaoImpl implements CopyDao {
         return copyArrayList;
     }
 
-    public List<Copy> getAllCopiesByUser(User user)
-    {
+    public boolean insertCopy(Copy copy) {
+        String query = "INSERT INTO copy VALUES (?, ?, ?, ?, ?)";
+        try (Connection con = DBConnection.getDataSource().getConnection()) {
+            PreparedStatement pst = con.prepareStatement(query);
+
+            pst.setInt(1, copy.getCreatorId());
+            pst.setInt(2, copy.getPublicationYear());
+            pst.setString(3, copy.getPublishingHouse());
+            pst.setBoolean(4, copy.isAvailable());
+            pst.setObject(5, copy.getBookId());
+            int i = pst.executeUpdate();
+            if (i == 1) {
+                return true;
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
+    public List<Copy> getAllCopiesByUser(User user) {
         Book book;
         Copy copy;
         ArrayList<Copy> copyArrayList = new ArrayList<>();
@@ -95,8 +113,7 @@ public class CopyDaoImpl implements CopyDao {
     }
 
 
-    public Map<Copy, Integer> getCountOfCopiesOrdersByBookId(int bookId)
-    {
+    public Map<Copy, Integer> getCountOfCopiesOrdersByBookId(int bookId) {
         Copy copy;
         int copyOrdersCount;
         Map<Copy, Integer> countOrdersForCopies = new HashMap<>();

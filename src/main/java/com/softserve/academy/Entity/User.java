@@ -5,6 +5,8 @@ import java.sql.Date;
 
 public class User {
     private int id;
+    private Date createdAt;
+    private User creatorId;
     private String firstname;
     private String lastName;
     private String userName;
@@ -20,6 +22,22 @@ public class User {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public User getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(User creatorId) {
+        this.creatorId = creatorId;
     }
 
     public User() {}

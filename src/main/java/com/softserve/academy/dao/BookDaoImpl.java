@@ -15,8 +15,7 @@ import java.util.List;
 public class BookDaoImpl implements BookDao {
     private static final Logger LOGGER = Logger.getLogger(BookDaoImpl.class);
 
-    public List<Book> getAllBooksByUser(User user)
-    {
+    public List<Book> getAllBooksByUser(User user) {
         Book book;
         ArrayList<Book> bookArrayList = new ArrayList<>();
         String query = "select distinct book.id, book.name, book.description, book.page_quantity\n" +
@@ -43,8 +42,26 @@ public class BookDaoImpl implements BookDao {
         return bookArrayList;
     }
 
-    public int getCountOfBookOrdersByBookId(int bookId)
-    {
+    public boolean insertBook(Book book) {
+        String query = "INSERT INTO book VALUES (?, ?, ?, ?)";
+        try (Connection con = DBConnection.getDataSource().getConnection()) {
+            PreparedStatement pst = con.prepareStatement(query);
+
+            pst.setObject(1, book.getCreatorId());
+            pst.setString(2, book.getName());
+            pst.setString(3, book.getDescription());
+            pst.setInt(4, book.getPageQuantity());
+            int i = pst.executeUpdate();
+            if (i == 1) {
+                return true;
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
+    public int getCountOfBookOrdersByBookId(int bookId) {
         int bookOrdersCount = 0;
         String query = "select count(book_id) as ordersQuantity\n" +
             "from orders\n" +
@@ -64,8 +81,7 @@ public class BookDaoImpl implements BookDao {
     }
 
 
-    public int getAverageTimeOfReadingByBookId(int bookId)
-    {
+    public int getAverageTimeOfReadingByBookId(int bookId) {
         int daysCount = 0;
         String query = "select round(avg(datediff(convert(orders.return_date, date), CONVERT(orders.take_date, date))), 0) as daysCount\n" +
             "from orders left join book on book.id = orders.book_id\n" +

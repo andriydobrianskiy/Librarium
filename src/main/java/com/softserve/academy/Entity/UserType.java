@@ -3,6 +3,7 @@ package com.softserve.academy.Entity;
 import java.util.Date;
 
 public class UserType {
+
     private int id;
     private String name;
 
@@ -25,12 +26,18 @@ public class UserType {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof UserType)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof UserType)) {
+            return false;
+        }
 
         UserType userType = (UserType) o;
 
-        if (id != userType.id) return false;
+        if (id != userType.id) {
+            return false;
+        }
         return name != null ? name.equals(userType.name) : userType.name == null;
 
     }

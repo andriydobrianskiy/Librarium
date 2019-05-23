@@ -1,17 +1,14 @@
 package com.softserve.academy.connectDatabase;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+import com.softserve.academy.util.PropertiesUtil;
+import org.apache.log4j.Logger;
 
 import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import com.softserve.academy.util.PropertiesUtil;
-import org.apache.log4j.Logger;
 import java.util.Properties;
 
 public class DBConnection implements InterfaceDataBase {

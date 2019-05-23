@@ -12,8 +12,32 @@ import java.sql.SQLException;
 public class UserDaoImpl implements UserDao {
     private static final Logger LOGGER = Logger.getLogger(UserDaoImpl.class);
 
-    public int getDaysOfUsingLibraryByUser(User user)
-    {
+    public boolean insertUser(User user) {
+        String query = "INSERT INTO user VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (Connection con = DBConnection.getDataSource().getConnection()) {
+            PreparedStatement pst = con.prepareStatement(query);
+
+            pst.setObject(1, user.getCreatorId());
+            pst.setString(2, user.getFirstname());
+            pst.setString(3, user.getLastName());
+            pst.setString(4, user.getUserName());
+            pst.setString(5, user.getPassword());
+            pst.setString(6, user.getPhone());
+            pst.setString(7, user.getAddress());
+            pst.setDate(8, user.getBirthday_date());
+            pst.setObject(9, user.getContact_type_id());
+            int i = pst.executeUpdate();
+            if (i == 1) {
+                return true;
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
+
+    public int getDaysOfUsingLibraryByUser(User user) {
         int daysQuantity = 0;
         String query = "select datediff(convert(NOW(), date), CONVERT(created_at, date)) as daysOfUsing  \n" +
             "from user\n" +
@@ -32,3 +56,4 @@ public class UserDaoImpl implements UserDao {
         return daysQuantity;
     }
 }
+
