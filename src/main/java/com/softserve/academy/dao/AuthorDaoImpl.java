@@ -12,12 +12,12 @@ public class AuthorDaoImpl implements AuthorDao {
     private static final Logger LOGGER = Logger.getLogger(AuthorDaoImpl.class);
 
     public boolean insertAuthor(Author author) {
-        String query = "INSERT INTO author VALUES (?, ?, ?)";
+        String query = "INSERT INTO author(user_id, firstname, lastname) VALUES (?, ?, ?)";
         try (Connection con = DBConnection.getDataSource().getConnection()) {
             PreparedStatement pst = con.prepareStatement(query);
 
 
-            pst.setInt(1, author.getCreatorId());
+            pst.setInt(1, author.getCreatorId().getId());
             pst.setString(2, author.getFirstName());
             pst.setString(3, author.getLastName());
             int i = pst.executeUpdate();
