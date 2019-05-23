@@ -14,7 +14,7 @@ public class Copy {
     private int publicationYear;
     private String publishingHouse;
     private boolean available;
-    private int bookId;
+    private Book bookId;
 
     public Copy() {
     }
@@ -67,14 +67,13 @@ public class Copy {
         this.available = available;
     }
 
-    public int getBookId() {
+    public Book getBookId() {
         return bookId;
     }
 
-    public void setBookId(int bookId) {
+    public void setBookId(Book bookId) {
         this.bookId = bookId;
     }
-
 
     @Override
     public boolean equals(Object o) {
@@ -99,13 +98,13 @@ public class Copy {
         if (available != copy.available) {
             return false;
         }
-        if (bookId != copy.bookId) {
-            return false;
-        }
         if (createdAt != null ? !createdAt.equals(copy.createdAt) : copy.createdAt != null) {
             return false;
         }
-        return publishingHouse != null ? publishingHouse.equals(copy.publishingHouse) : copy.publishingHouse == null;
+        if (publishingHouse != null ? !publishingHouse.equals(copy.publishingHouse) : copy.publishingHouse != null) {
+            return false;
+        }
+        return bookId != null ? bookId.equals(copy.bookId) : copy.bookId == null;
     }
 
     @Override
@@ -116,7 +115,18 @@ public class Copy {
         result = 31 * result + publicationYear;
         result = 31 * result + (publishingHouse != null ? publishingHouse.hashCode() : 0);
         result = 31 * result + (available ? 1 : 0);
-        result = 31 * result + bookId;
+        result = 31 * result + (bookId != null ? bookId.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Copy{" +
+            "id=" + id +
+            ", publicationYear=" + publicationYear +
+            ", publishingHouse='" + publishingHouse + '\'' +
+            ", available=" + available +
+            ", bookId=" + bookId +
+            '}';
     }
 }
