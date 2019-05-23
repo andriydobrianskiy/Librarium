@@ -5,12 +5,11 @@ import com.softserve.academy.Entity.User;
 import com.softserve.academy.connectDatabase.DBConnection;
 import org.apache.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BookDaoImpl implements BookDao {
     private static final Logger LOGGER = Logger.getLogger(BookDaoImpl.class);
@@ -116,11 +115,11 @@ public class BookDaoImpl implements BookDao {
     }
 
     public boolean insertBook(Book book) {
-        String query = "INSERT INTO book VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO book(user_id, name, description, page_quantity) VALUES (?, ?, ?, ?)";
         try (Connection con = DBConnection.getDataSource().getConnection()) {
             PreparedStatement pst = con.prepareStatement(query);
 
-            pst.setObject(1, book.getCreatorId());
+            pst.setInt(1, book.getCreatorId().getId());
             pst.setString(2, book.getName());
             pst.setString(3, book.getDescription());
             pst.setInt(4, book.getPageQuantity());
@@ -170,5 +169,42 @@ public class BookDaoImpl implements BookDao {
             LOGGER.error(e.getMessage(), e);
         }
         return daysCount;
+    }
+
+    public Map<Book, Integer> getOrderedListOfBooksInPeriod(Date startDate, Date endDate, boolean sortAsc) {
+        Book book;
+        int bookCount;
+        Map<Book, Integer> countBooksInPeriod = new HashMap<>();
+
+        String query = "select count(book_id) as booksQuantity, " +
+            "book.id, book.name, book.description, book.page_quantity" +
+            "from orders left join book on book.id = orders.book_id" +
+            "where orders.take_date Between (? and ?)" +
+            "Group by orders.book_ID" +
+            "Order by COUNT(book_id) ";
+        if (sortAsc) {
+            query += "ASC";
+        } else {
+            query += "DESC";
+        }
+        try (Connection con = DBConnection.getDataSource().getConnection()) {
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setDate(1, startDate);
+            pst.setDate(2, endDate);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                book = new Book();
+                bookCount = rs.getInt("booksQuantity");
+                book.setId(rs.getInt("book.id"));
+                book.setName(rs.getString("book.name"));
+                book.setDescription(rs.getString("book.description"));
+                book.setPageQuantity(rs.getInt("book.page_quantity"));
+                countBooksInPeriod.put(book, bookCount);
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+
+        return countBooksInPeriod;
     }
 }

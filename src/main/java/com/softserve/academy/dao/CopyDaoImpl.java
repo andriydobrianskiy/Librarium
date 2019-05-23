@@ -55,15 +55,16 @@ public class CopyDaoImpl implements CopyDao {
     }
 
     public boolean insertCopy(Copy copy) {
-        String query = "INSERT INTO copy VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO copy(user_id, publication_year, publishing_house, available, book_id)" +
+            " VALUES (?, ?, ?, ?, ?)";
         try (Connection con = DBConnection.getDataSource().getConnection()) {
             PreparedStatement pst = con.prepareStatement(query);
 
-            pst.setInt(1, copy.getCreatorId());
+            pst.setInt(1, copy.getCreatorId().getId());
             pst.setInt(2, copy.getPublicationYear());
             pst.setString(3, copy.getPublishingHouse());
             pst.setBoolean(4, copy.isAvailable());
-            pst.setObject(5, copy.getBookId());
+            pst.setInt(5, copy.getBookId().getId());
             int i = pst.executeUpdate();
             if (i == 1) {
                 return true;
