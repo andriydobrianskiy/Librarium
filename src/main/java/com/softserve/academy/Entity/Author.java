@@ -10,7 +10,7 @@ import java.sql.Date;
 public class Author {
     private int id;
     private Date createdAt;
-    private int creatorId;
+    private User creatorId;
     private String firstName;
     private String lastName;
 
@@ -33,11 +33,11 @@ public class Author {
         this.createdAt = createdAt;
     }
 
-    public int getCreatorId() {
+    public User getCreatorId() {
         return creatorId;
     }
 
-    public void setCreatorId(int creatorId) {
+    public void setCreatorId(User creatorId) {
         this.creatorId = creatorId;
     }
 
@@ -71,10 +71,10 @@ public class Author {
         if (id != author.id) {
             return false;
         }
-        if (creatorId != author.creatorId) {
+        if (createdAt != null ? !createdAt.equals(author.createdAt) : author.createdAt != null) {
             return false;
         }
-        if (createdAt != null ? !createdAt.equals(author.createdAt) : author.createdAt != null) {
+        if (creatorId != null ? !creatorId.equals(author.creatorId) : author.creatorId != null) {
             return false;
         }
         if (firstName != null ? !firstName.equals(author.firstName) : author.firstName != null) {
@@ -87,7 +87,7 @@ public class Author {
     public int hashCode() {
         int result = id;
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
-        result = 31 * result + creatorId;
+        result = 31 * result + (creatorId != null ? creatorId.hashCode() : 0);
         result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
         result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
         return result;

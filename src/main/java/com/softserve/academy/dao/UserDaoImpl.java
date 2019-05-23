@@ -8,25 +8,52 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDaoImpl implements UserDao {
     private static final Logger LOGGER = Logger.getLogger(UserDaoImpl.class);
 
-    public boolean insertUser(User user) {
-        String query = "INSERT INTO user(creatorId, firstname, lastName, userName, password, " +
-            "phone, address, birthday_date, contact_type_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    public List<User> getAllUsers() {
+        User user;
+        ArrayList<User> userArrayList = new ArrayList<>();
+        String query = "select id, firstname, lastName," +
+            "phone, address, birthday_date" +
+            "from user";
+
         try (Connection con = DBConnection.getDataSource().getConnection()) {
             PreparedStatement pst = con.prepareStatement(query);
 
-            pst.setObject(1, user.getCreatorId());
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                user = new User();
+                user.setId(rs.getInt("id"));
+                user.setFirstname(rs.getString("firstname"));
+                user.setLastName(rs.getString("lastname"));
+                user.setPhone(rs.getString("phone"));
+                user.setAddress(rs.getString("address"));
+                user.setBirthday_date(rs.getDate("birthday_date"));
+
+                userArrayList.add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return userArrayList;
+    }
+
+    public boolean insertUser(User user) {
+        String query = "INSERT INTO user(user_id, firstname, lastname," +
+            "phone, address, birthday_date, contact_type_id) VALUES (?, ?, ?, ?, ?, ?, 3)";
+        try (Connection con = DBConnection.getDataSource().getConnection()) {
+            PreparedStatement pst = con.prepareStatement(query);
+
+            pst.setInt(1, user.getCreatorId().getId());
             pst.setString(2, user.getFirstname());
             pst.setString(3, user.getLastName());
-            pst.setString(4, user.getUserName());
-            pst.setString(5, user.getPassword());
-            pst.setString(6, user.getPhone());
-            pst.setString(7, user.getAddress());
-            pst.setDate(8, user.getBirthday_date());
-            pst.setObject(9, user.getContact_type_id());
+            pst.setString(4, user.getPhone());
+            pst.setString(5, user.getAddress());
+            pst.setDate(6, user.getBirthday_date());
             int i = pst.executeUpdate();
             if (i == 1) {
                 return true;

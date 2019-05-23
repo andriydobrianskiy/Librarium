@@ -42,11 +42,11 @@ public class BookDaoImpl implements BookDao {
     }
 
     public boolean insertBook(Book book) {
-        String query = "INSERT INTO book(creatorId, name, description, pageQuantity) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO book(user_id, name, description, page_quantity) VALUES (?, ?, ?, ?)";
         try (Connection con = DBConnection.getDataSource().getConnection()) {
             PreparedStatement pst = con.prepareStatement(query);
 
-            pst.setObject(1, book.getCreatorId());
+            pst.setInt(1, book.getCreatorId().getId());
             pst.setString(2, book.getName());
             pst.setString(3, book.getDescription());
             pst.setInt(4, book.getPageQuantity());

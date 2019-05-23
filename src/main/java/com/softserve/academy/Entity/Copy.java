@@ -10,14 +10,11 @@ import java.sql.Date;
 public class Copy {
     private int id;
     private Date createdAt;
-    private int creatorId;
+    private User creatorId;
     private int publicationYear;
     private String publishingHouse;
     private boolean available;
     private Book bookId;
-
-    public Copy() {
-    }
 
     public int getId() {
         return id;
@@ -35,11 +32,11 @@ public class Copy {
         this.createdAt = createdAt;
     }
 
-    public int getCreatorId() {
+    public User getCreatorId() {
         return creatorId;
     }
 
-    public void setCreatorId(int creatorId) {
+    public void setCreatorId(User creatorId) {
         this.creatorId = creatorId;
     }
 
@@ -89,9 +86,6 @@ public class Copy {
         if (id != copy.id) {
             return false;
         }
-        if (creatorId != copy.creatorId) {
-            return false;
-        }
         if (publicationYear != copy.publicationYear) {
             return false;
         }
@@ -99,6 +93,9 @@ public class Copy {
             return false;
         }
         if (createdAt != null ? !createdAt.equals(copy.createdAt) : copy.createdAt != null) {
+            return false;
+        }
+        if (creatorId != null ? !creatorId.equals(copy.creatorId) : copy.creatorId != null) {
             return false;
         }
         if (publishingHouse != null ? !publishingHouse.equals(copy.publishingHouse) : copy.publishingHouse != null) {
@@ -111,7 +108,7 @@ public class Copy {
     public int hashCode() {
         int result = id;
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
-        result = 31 * result + creatorId;
+        result = 31 * result + (creatorId != null ? creatorId.hashCode() : 0);
         result = 31 * result + publicationYear;
         result = 31 * result + (publishingHouse != null ? publishingHouse.hashCode() : 0);
         result = 31 * result + (available ? 1 : 0);
