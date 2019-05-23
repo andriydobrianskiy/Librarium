@@ -26,6 +26,17 @@ public class BookService {
         return bookDao.getAllBooksByUser(user);
     }
 
+    public Book getBookByName(String name) throws IllegalArgumentException {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Book name is null or empty");
+        }
+        Book book = bookDao.getBookByName(name);
+        if (book.getId() == 0) {
+            throw new IllegalArgumentException("Book with that name is not found");
+        }
+        return book;
+    }
+
     public boolean insertBook(Book book) throws IllegalArgumentException {
         if (book == null) {
             throw new IllegalArgumentException("Book is null");

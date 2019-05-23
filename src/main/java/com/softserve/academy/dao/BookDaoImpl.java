@@ -66,6 +66,29 @@ public class BookDaoImpl implements BookDao {
         return bookArrayList;
     }
 
+    public Book getBookByName(String name) {
+        Book book = new Book();
+        String query = "select id, description, page_quantity\n" +
+            "from book\n" +
+            "where name = ?";
+
+        try (Connection con = DBConnection.getDataSource().getConnection()) {
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setString(1, name);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                book.setId(rs.getInt("id"));
+                book.setName(name);
+                book.setDescription(rs.getString("description"));
+                book.setPageQuantity(rs.getInt("page_quantity"));
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+
+        return book;
+    }
+
     public boolean exists(Book book) {
         int bookCount = 0;
         String query = "select count(*) as bookCount\n" +
