@@ -10,6 +10,12 @@ import java.util.Map;
 public interface BookDao {
     List<Book> getAllBooksByUser(User user);
 
+    List<Book> getAllBooks();
+
+    Book getBookByName(String name);
+
+    boolean exists(Book book);
+
     Map<Book, Integer> getOrderedListOfBooksInPeriod(Date startDate, Date endDate, boolean sortAsc);
 
     boolean insertBook(Book book);

@@ -14,6 +14,30 @@ import java.util.Map;
 public class BookDaoImpl implements BookDao {
     private static final Logger LOGGER = Logger.getLogger(BookDaoImpl.class);
 
+    public List<Book> getAllBooks() {
+        Book book;
+        ArrayList<Book> bookArrayList = new ArrayList<>();
+        String query = "select id, name, description, page_quantity from book";
+
+        try (Connection con = DBConnection.getDataSource().getConnection()) {
+            PreparedStatement pst = con.prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                book = new Book();
+                book.setId(rs.getInt("id"));
+                book.setName(rs.getString("name"));
+                book.setDescription(rs.getString("description"));
+                book.setPageQuantity(rs.getInt("page_quantity"));
+
+                bookArrayList.add(book);
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+
+        return bookArrayList;
+    }
+
     public List<Book> getAllBooksByUser(User user) {
         Book book;
         ArrayList<Book> bookArrayList = new ArrayList<>();
@@ -39,6 +63,55 @@ public class BookDaoImpl implements BookDao {
         }
 
         return bookArrayList;
+    }
+
+    public Book getBookByName(String name) {
+        Book book = new Book();
+        String query = "select id, description, page_quantity\n" +
+            "from book\n" +
+            "where name = ?";
+
+        try (Connection con = DBConnection.getDataSource().getConnection()) {
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setString(1, name);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                book.setId(rs.getInt("id"));
+                book.setName(name);
+                book.setDescription(rs.getString("description"));
+                book.setPageQuantity(rs.getInt("page_quantity"));
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+
+        return book;
+    }
+
+    public boolean exists(Book book) {
+        int bookCount = 0;
+        String query = "select count(*) as bookCount\n" +
+            "from book\n" +
+            "where name = ? and description = ? and page_quantity = ?";
+        try (Connection con = DBConnection.getDataSource().getConnection()) {
+            PreparedStatement pst = con.prepareStatement(query);
+
+            pst.setString(1, book.getName());
+            pst.setString(2, book.getDescription());
+            pst.setInt(3, book.getPageQuantity());
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                bookCount = rs.getInt("bookCount");
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        if (bookCount == 0) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public boolean insertBook(Book book) {
