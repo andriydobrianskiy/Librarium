@@ -10,7 +10,7 @@ import java.sql.SQLException;
 
 public class OrdersDaoImpl implements OrdersDao {
 
-    private static final Logger LOGGER = Logger.getLogger(CopyDaoImpl.class);
+    private static final Logger LOGGER = Logger.getLogger(OrdersDaoImpl.class);
 
     public boolean insertOrders(Orders orders) {
         String query = "INSERT INTO orders VALUES (?, ?, ?, ?, ?, ?, ?)";
