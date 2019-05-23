@@ -42,4 +42,25 @@ public class BookDaoImpl implements BookDao {
 
         return bookArrayList;
     }
+
+    public int getCountOfBookOrdersByBookId(int bookId)
+    {
+        int bookOrdersCount = 0;
+        String query = "select count(book_id) as ordersQuantity\n" +
+            "from orders\n" +
+            "where orders.book_id = ?";
+        try (Connection con = DBConnection.getDataSource().getConnection()) {
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setInt(1, bookId);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                bookOrdersCount = rs.getInt("ordersQuantity");
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+
+        return bookOrdersCount;
+    }
+
 }
