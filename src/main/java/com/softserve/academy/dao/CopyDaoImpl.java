@@ -11,7 +11,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CopyDaoImpl implements CopyDao {
     private static final Logger LOGGER = Logger.getLogger(CopyDaoImpl.class);
@@ -90,5 +92,38 @@ public class CopyDaoImpl implements CopyDao {
         }
 
         return copyArrayList;
+    }
+
+
+    public Map<Copy, Integer> getCountOfCopiesOrdersByBookId(int bookId)
+    {
+        Copy copy;
+        int copyOrdersCount;
+        Map<Copy, Integer> countOrdersForCopies = new HashMap<>();
+        String query = "select count(orders.copy_id) as copyOrdersCount, copy.id, \n" +
+            "\tcopy.publication_year, copy.publishing_house, copy.available\n" +
+            "from orders left join copy on copy.id = orders.copy_id\n" +
+            "where orders.book_id = ?\n" +
+            "group by orders.copy_id";
+        try (Connection con = DBConnection.getDataSource().getConnection()) {
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setInt(1, bookId);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                copy = new Copy();
+
+                copyOrdersCount = rs.getInt("copyOrdersCount");
+                copy.setId(rs.getInt("copy.id"));
+                copy.setPublicationYear(rs.getInt("copy.publication_year"));
+                copy.setPublishingHouse(rs.getString("copy.publishing_house"));
+                copy.setAvailable(rs.getBoolean("copy.available"));
+
+                countOrdersForCopies.put(copy, copyOrdersCount);
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+
+        return countOrdersForCopies;
     }
 }
