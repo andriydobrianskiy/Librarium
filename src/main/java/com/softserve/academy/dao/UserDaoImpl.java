@@ -42,6 +42,35 @@ public class UserDaoImpl implements UserDao {
         return userArrayList;
     }
 
+    public List<User> getAllDebtors() {
+        User debtor;
+        ArrayList<User> debtorArrayList = new ArrayList<>();
+        String query = "select user.id, user.firstname, user.lastname, \n" +
+            "user.phone, user.address, user.birthday_date\n" +
+            "from orders left join user on user.id = orders.reader_id\n" +
+            "where current_timestamp > orders.deadline_date and orders.return_date is null";
+
+        try (Connection con = DBConnection.getDataSource().getConnection()) {
+            PreparedStatement pst = con.prepareStatement(query);
+
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                debtor = new User();
+                debtor.setId(rs.getInt("user.id"));
+                debtor.setFirstname(rs.getString("user.firstname"));
+                debtor.setLastName(rs.getString("user.lastname"));
+                debtor.setPhone(rs.getString("user.phone"));
+                debtor.setAddress(rs.getString("user.address"));
+                debtor.setBirthday_date(rs.getDate("user.birthday_date"));
+
+                debtorArrayList.add(debtor);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return debtorArrayList;
+    }
+
     public boolean insertUser(User user) {
         String query = "INSERT INTO user(user_id, firstname, lastname," +
             "phone, address, birthday_date, contact_type_id) VALUES (?, ?, ?, ?, ?, ?, 3)";
