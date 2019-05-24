@@ -1,5 +1,6 @@
 package com.softserve.academy.dao;
 
+import com.softserve.academy.Entity.Author;
 import com.softserve.academy.Entity.Book;
 import com.softserve.academy.Entity.User;
 
@@ -23,4 +24,8 @@ public interface BookDao {
     int getCountOfBookOrdersByBookId(int bookId);
 
     int getAverageTimeOfReadingByBookId(int bookId);
+
+    List<Book> getBooksByAuthors(Author author);
+
+    Map<Book, Integer> getBookByUserAverageAge(Book book);
 }
