@@ -71,8 +71,8 @@ public class CopyDaoImpl implements CopyDao {
             if (i == 1) {
                 return true;
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
         }
         return false;
     }
@@ -146,5 +146,26 @@ public class CopyDaoImpl implements CopyDao {
         }
 
         return countOrdersForCopies;
+    }
+
+    @Override
+    public boolean changeCopyAvailability(Copy copy, boolean toAvailable) {
+        String query = "update copy\n" +
+            "set available = ?\n" +
+            "where id = ?";
+        try (Connection con = DBConnection.getDataSource().getConnection()) {
+            PreparedStatement pst = con.prepareStatement(query);
+
+            pst.setInt(1, toAvailable ? 1 : 0);
+            pst.setInt(2, copy.getId());
+
+            int i = pst.executeUpdate();
+            if (i == 1) {
+                return true;
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return false;
     }
 }

@@ -14,4 +14,6 @@ public interface CopyDao {
     List<Copy> getAllCopiesByUser(User user);
 
     Map<Copy, Integer> getCountOfCopiesOrdersByBookId(int bookId);
+
+    boolean changeCopyAvailability(Copy copy, boolean toAvailable);
 }
