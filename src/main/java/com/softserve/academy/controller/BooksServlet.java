@@ -28,11 +28,7 @@ public class BooksServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         DBConnection dbConnection = new DBConnection();
         dbConnection.connect();
-        List<Book> bookList = new BookServiceImpl().getAllBooks();
-        Map<Book, String> books = new HashMap<>();
-        for (int i = 0; i < bookList.size(); i++) {
-           books.put(bookList.get(i), "photo" + (i + 1));
-        }
+        List<Book> books = new BookServiceImpl().getAllBooks();
         request.setAttribute("books", books);
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/pages/books.jsp");
         rd.forward(request, response);

@@ -2,6 +2,8 @@ package com.softserve.academy.service;
 
 import com.softserve.academy.Entity.Book;
 import com.softserve.academy.Entity.User;
+import com.softserve.academy.dao.AuthorDao;
+import com.softserve.academy.dao.AuthorDaoImpl;
 import com.softserve.academy.dao.BookDao;
 import com.softserve.academy.dao.BookDaoImpl;
 import org.apache.log4j.Logger;
@@ -13,10 +15,16 @@ import java.util.Map;
 public class BookServiceImpl implements BookService {
     private static final Logger LOGGER = Logger.getLogger(BookServiceImpl.class);
     private static final BookDao bookDao = new BookDaoImpl();
+    private static final AuthorDao authorDao = new AuthorDaoImpl();
 
     @Override
     public List<Book> getAllBooks() {
-        return bookDao.getAllBooks();
+        List<Book> books = bookDao.getAllBooks();
+        for (Book book : books) {
+            book.setAuthors(authorDao.getAuthorsByBookId(book.getId()));
+            book.setImageUrl("photo" + book.getId());
+        }
+        return books;
     }
 
     @Override
