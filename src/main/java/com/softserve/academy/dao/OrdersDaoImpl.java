@@ -12,6 +12,7 @@ public class OrdersDaoImpl implements OrdersDao {
 
     private static final Logger LOGGER = Logger.getLogger(OrdersDaoImpl.class);
 
+    @Override
     public boolean insertOrders(Orders orders) {
         String query = "INSERT INTO orders(user_id, reader_id, book_id, copy_id, take_date," +
             " return_date, deadline_date)" +

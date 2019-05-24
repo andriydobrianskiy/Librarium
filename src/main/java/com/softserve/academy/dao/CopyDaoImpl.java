@@ -18,6 +18,7 @@ import java.util.Map;
 public class CopyDaoImpl implements CopyDao {
     private static final Logger LOGGER = Logger.getLogger(CopyDaoImpl.class);
 
+    @Override
     public List<Copy> getAllCopiesByBookId(int bookId) {
         Book book;
         Copy copy;
@@ -54,6 +55,7 @@ public class CopyDaoImpl implements CopyDao {
         return copyArrayList;
     }
 
+    @Override
     public boolean insertCopy(Copy copy) {
         String query = "INSERT INTO copy(user_id, publication_year, publishing_house, available, book_id)" +
             " VALUES (?, ?, ?, ?, ?)";
@@ -75,6 +77,7 @@ public class CopyDaoImpl implements CopyDao {
         return false;
     }
 
+    @Override
     public List<Copy> getAllCopiesByUser(User user) {
         Book book;
         Copy copy;
@@ -113,7 +116,7 @@ public class CopyDaoImpl implements CopyDao {
         return copyArrayList;
     }
 
-
+    @Override
     public Map<Copy, Integer> getCountOfCopiesOrdersByBookId(int bookId) {
         Copy copy;
         int copyOrdersCount;

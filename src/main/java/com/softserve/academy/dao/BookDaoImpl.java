@@ -14,6 +14,7 @@ import java.util.Map;
 public class BookDaoImpl implements BookDao {
     private static final Logger LOGGER = Logger.getLogger(BookDaoImpl.class);
 
+    @Override
     public List<Book> getAllBooks() {
         Book book;
         ArrayList<Book> bookArrayList = new ArrayList<>();
@@ -38,6 +39,7 @@ public class BookDaoImpl implements BookDao {
         return bookArrayList;
     }
 
+    @Override
     public List<Book> getAllBooksByUser(User user) {
         Book book;
         ArrayList<Book> bookArrayList = new ArrayList<>();
@@ -65,6 +67,7 @@ public class BookDaoImpl implements BookDao {
         return bookArrayList;
     }
 
+    @Override
     public Book getBookByName(String name) {
         Book book = new Book();
         String query = "select id, description, page_quantity\n" +
@@ -88,6 +91,7 @@ public class BookDaoImpl implements BookDao {
         return book;
     }
 
+    @Override
     public boolean exists(Book book) {
         int bookCount = 0;
         String query = "select count(*) as bookCount\n" +
@@ -114,6 +118,7 @@ public class BookDaoImpl implements BookDao {
         }
     }
 
+    @Override
     public boolean insertBook(Book book) {
         String query = "INSERT INTO book(user_id, name, description, page_quantity) VALUES (?, ?, ?, ?)";
         try (Connection con = DBConnection.getDataSource().getConnection()) {
@@ -133,6 +138,7 @@ public class BookDaoImpl implements BookDao {
         return false;
     }
 
+    @Override
     public int getCountOfBookOrdersByBookId(int bookId) {
         int bookOrdersCount = 0;
         String query = "select count(book_id) as ordersQuantity\n" +
@@ -152,7 +158,7 @@ public class BookDaoImpl implements BookDao {
         return bookOrdersCount;
     }
 
-
+    @Override
     public int getAverageTimeOfReadingByBookId(int bookId) {
         int daysCount = 0;
         String query = "select round(avg(datediff(convert(orders.return_date, date), CONVERT(orders.take_date, date))), 0) as daysCount\n" +
@@ -171,6 +177,7 @@ public class BookDaoImpl implements BookDao {
         return daysCount;
     }
 
+    @Override
     public Map<Book, Integer> getOrderedListOfBooksInPeriod(Date startDate, Date endDate, boolean sortAsc) {
         Book book;
         int bookCount;

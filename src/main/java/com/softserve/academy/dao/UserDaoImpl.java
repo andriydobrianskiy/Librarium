@@ -14,6 +14,7 @@ import java.util.List;
 public class UserDaoImpl implements UserDao {
     private static final Logger LOGGER = Logger.getLogger(UserDaoImpl.class);
 
+    @Override
     public List<User> getAllUsers() {
         User user;
         ArrayList<User> userArrayList = new ArrayList<>();
@@ -42,6 +43,7 @@ public class UserDaoImpl implements UserDao {
         return userArrayList;
     }
 
+    @Override
     public List<User> getAllDebtors() {
         User debtor;
         ArrayList<User> debtorArrayList = new ArrayList<>();
@@ -71,6 +73,7 @@ public class UserDaoImpl implements UserDao {
         return debtorArrayList;
     }
 
+    @Override
     public boolean insertUser(User user) {
         String query = "INSERT INTO user(user_id, firstname, lastname," +
             "phone, address, birthday_date, contact_type_id) VALUES (?, ?, ?, ?, ?, ?, 3)";
@@ -93,7 +96,7 @@ public class UserDaoImpl implements UserDao {
         return false;
     }
 
-
+    @Override
     public int getDaysOfUsingLibraryByUser(User user) {
         int daysQuantity = 0;
         String query = "select datediff(convert(NOW(), date), CONVERT(created_at, date)) as daysOfUsing  \n" +
