@@ -67,8 +67,8 @@ public class CopyDaoImpl implements CopyDao {
             pst.setString(3, copy.getPublishingHouse());
             pst.setBoolean(4, copy.isAvailable());
             pst.setInt(5, copy.getBookId().getId());
-            int i = pst.executeUpdate();
-            if (i == 1) {
+            int rowsAffected = pst.executeUpdate();
+            if (rowsAffected == 1) {
                 return true;
             }
         } catch (SQLException e) {
@@ -159,8 +159,8 @@ public class CopyDaoImpl implements CopyDao {
             pst.setInt(1, toAvailable ? 1 : 0);
             pst.setInt(2, copy.getId());
 
-            int i = pst.executeUpdate();
-            if (i == 1) {
+            int rowsAffected = pst.executeUpdate();
+            if (rowsAffected == 1) {
                 return true;
             }
         } catch (SQLException e) {

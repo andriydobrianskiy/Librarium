@@ -21,12 +21,12 @@ public class AuthorDaoImpl implements AuthorDao {
             pst.setInt(1, author.getCreatorId().getId());
             pst.setString(2, author.getFirstName());
             pst.setString(3, author.getLastName());
-            int i = pst.executeUpdate();
-            if (i == 1) {
+            int rowsAffected = pst.executeUpdate();
+            if (rowsAffected == 1) {
                 return true;
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
         }
         return false;
     }

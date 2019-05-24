@@ -38,7 +38,7 @@ public class UserDaoImpl implements UserDao {
                 userArrayList.add(user);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage(), e);
         }
         return userArrayList;
     }
@@ -68,7 +68,7 @@ public class UserDaoImpl implements UserDao {
                 debtorArrayList.add(debtor);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage(), e);
         }
         return debtorArrayList;
     }
@@ -86,12 +86,12 @@ public class UserDaoImpl implements UserDao {
             pst.setString(4, user.getPhone());
             pst.setString(5, user.getAddress());
             pst.setDate(6, user.getBirthday_date());
-            int i = pst.executeUpdate();
-            if (i == 1) {
+            int rowsAffected = pst.executeUpdate();
+            if (rowsAffected == 1) {
                 return true;
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
         }
         return false;
     }

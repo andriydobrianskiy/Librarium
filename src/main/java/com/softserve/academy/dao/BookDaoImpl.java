@@ -107,8 +107,8 @@ public class BookDaoImpl implements BookDao {
             if (rs.next()) {
                 bookCount = rs.getInt("bookCount");
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
         }
 
         if (bookCount == 0) {
@@ -128,12 +128,12 @@ public class BookDaoImpl implements BookDao {
             pst.setString(2, book.getName());
             pst.setString(3, book.getDescription());
             pst.setInt(4, book.getPageQuantity());
-            int i = pst.executeUpdate();
-            if (i == 1) {
+            int rowsAffected = pst.executeUpdate();
+            if (rowsAffected == 1) {
                 return true;
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
         }
         return false;
     }

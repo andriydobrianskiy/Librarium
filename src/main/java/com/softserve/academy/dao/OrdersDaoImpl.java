@@ -27,12 +27,12 @@ public class OrdersDaoImpl implements OrdersDao {
             pst.setDate(5, orders.getTakeDate());
             pst.setDate(5, orders.getReturnDate());
             pst.setDate(5, orders.getDeadlineDate());
-            int i = pst.executeUpdate();
-            if (i == 1) {
+            int rowsAffected = pst.executeUpdate();
+            if (rowsAffected == 1) {
                 return true;
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
         }
         return false;
     }
