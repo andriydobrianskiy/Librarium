@@ -11,6 +11,7 @@ import java.sql.SQLException;
 public class AuthorDaoImpl implements AuthorDao {
     private static final Logger LOGGER = Logger.getLogger(AuthorDaoImpl.class);
 
+    @Override
     public boolean insertAuthor(Author author) {
         String query = "INSERT INTO author(user_id, firstname, lastname) VALUES (?, ?, ?)";
         try (Connection con = DBConnection.getDataSource().getConnection()) {
@@ -20,12 +21,12 @@ public class AuthorDaoImpl implements AuthorDao {
             pst.setInt(1, author.getCreatorId().getId());
             pst.setString(2, author.getFirstName());
             pst.setString(3, author.getLastName());
-            int i = pst.executeUpdate();
-            if (i == 1) {
+            int rowsAffected = pst.executeUpdate();
+            if (rowsAffected == 1) {
                 return true;
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
         }
         return false;
     }

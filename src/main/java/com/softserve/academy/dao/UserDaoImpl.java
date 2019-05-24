@@ -14,6 +14,7 @@ import java.util.List;
 public class UserDaoImpl implements UserDao {
     private static final Logger LOGGER = Logger.getLogger(UserDaoImpl.class);
 
+    @Override
     public List<User> getAllUsers() {
         User user;
         ArrayList<User> userArrayList = new ArrayList<>();
@@ -37,11 +38,12 @@ public class UserDaoImpl implements UserDao {
                 userArrayList.add(user);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage(), e);
         }
         return userArrayList;
     }
 
+    @Override
     public List<User> getAllDebtors() {
         User debtor;
         ArrayList<User> debtorArrayList = new ArrayList<>();
@@ -66,11 +68,12 @@ public class UserDaoImpl implements UserDao {
                 debtorArrayList.add(debtor);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage(), e);
         }
         return debtorArrayList;
     }
 
+    @Override
     public boolean insertUser(User user) {
         String query = "INSERT INTO user(user_id, firstname, lastname," +
             "phone, address, birthday_date, contact_type_id) VALUES (?, ?, ?, ?, ?, ?, 3)";
@@ -83,17 +86,17 @@ public class UserDaoImpl implements UserDao {
             pst.setString(4, user.getPhone());
             pst.setString(5, user.getAddress());
             pst.setDate(6, user.getBirthday_date());
-            int i = pst.executeUpdate();
-            if (i == 1) {
+            int rowsAffected = pst.executeUpdate();
+            if (rowsAffected == 1) {
                 return true;
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
         }
         return false;
     }
 
-
+    @Override
     public int getDaysOfUsingLibraryByUser(User user) {
         int daysQuantity = 0;
         String query = "select datediff(convert(NOW(), date), CONVERT(created_at, date)) as daysOfUsing  \n" +

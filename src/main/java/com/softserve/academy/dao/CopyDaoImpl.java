@@ -18,6 +18,7 @@ import java.util.Map;
 public class CopyDaoImpl implements CopyDao {
     private static final Logger LOGGER = Logger.getLogger(CopyDaoImpl.class);
 
+    @Override
     public List<Copy> getAllCopiesByBookId(int bookId) {
         Book book;
         Copy copy;
@@ -54,6 +55,7 @@ public class CopyDaoImpl implements CopyDao {
         return copyArrayList;
     }
 
+    @Override
     public boolean insertCopy(Copy copy) {
         String query = "INSERT INTO copy(user_id, publication_year, publishing_house, available, book_id)" +
             " VALUES (?, ?, ?, ?, ?)";
@@ -65,16 +67,17 @@ public class CopyDaoImpl implements CopyDao {
             pst.setString(3, copy.getPublishingHouse());
             pst.setBoolean(4, copy.isAvailable());
             pst.setInt(5, copy.getBookId().getId());
-            int i = pst.executeUpdate();
-            if (i == 1) {
+            int rowsAffected = pst.executeUpdate();
+            if (rowsAffected == 1) {
                 return true;
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
         }
         return false;
     }
 
+    @Override
     public List<Copy> getAllCopiesByUser(User user) {
         Book book;
         Copy copy;
@@ -113,7 +116,7 @@ public class CopyDaoImpl implements CopyDao {
         return copyArrayList;
     }
 
-
+    @Override
     public Map<Copy, Integer> getCountOfCopiesOrdersByBookId(int bookId) {
         Copy copy;
         int copyOrdersCount;
@@ -143,5 +146,26 @@ public class CopyDaoImpl implements CopyDao {
         }
 
         return countOrdersForCopies;
+    }
+
+    @Override
+    public boolean changeCopyAvailability(Copy copy, boolean toAvailable) {
+        String query = "update copy\n" +
+            "set available = ?\n" +
+            "where id = ?";
+        try (Connection con = DBConnection.getDataSource().getConnection()) {
+            PreparedStatement pst = con.prepareStatement(query);
+
+            pst.setInt(1, toAvailable ? 1 : 0);
+            pst.setInt(2, copy.getId());
+
+            int rowsAffected = pst.executeUpdate();
+            if (rowsAffected == 1) {
+                return true;
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return false;
     }
 }
