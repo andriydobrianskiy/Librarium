@@ -1,5 +1,6 @@
 package com.softserve.academy.dao;
 
+import com.softserve.academy.Entity.Author;
 import com.softserve.academy.Entity.Book;
 import com.softserve.academy.Entity.User;
 import com.softserve.academy.connectDatabase.DBConnection;
@@ -214,4 +215,66 @@ public class BookDaoImpl implements BookDao {
 
         return countBooksInPeriod;
     }
+
+    @Override
+    public List<Book> getBooksByAuthors(Author author) {
+        Book book = new Book();
+        ArrayList<Book> bookArrayList = new ArrayList<>();
+        String query = "Select\n" +
+                "\t\tB.id, B.Name, B.Description, B.Page_Quantity, A.firstname, A.lastname\n" +
+                "from  book AS B\n" +
+                "               Left join bookauthor AS BA ON BA.book_id = B.id\n" +
+                "               Left JOIN author AS A ON A.id = BA.author_id\n" +
+                "WHERE" +
+                "  A.id = ?";
+        try (Connection con = DBConnection.getDataSource().getConnection()) {
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setInt(1, author.getId());
+            //  pst.executeQuery();
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                book = new Book();
+                book.setId(rs.getInt(1));
+                book.setName(rs.getString(2));
+                book.setDescription(rs.getString(3));
+                book.setPageQuantity(rs.getInt(4));
+                bookArrayList.add(book);
+            }
+
+
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+
+        return bookArrayList;
+    }
+
+    @Override
+    public Map<Book, Integer> getBookByUserAverageAge(Book book) {
+        Book booknew = new Book();
+        Map<Book, Integer> bookIntegerMap = new HashMap<>();
+        int dayCount = 0;
+        String query = " Select \n" +
+                "\t\tROUND(AVG(datediff(convert(current_timestamp, date), CONVERT(birthday_date, date))), 0) AS dayCount, book.name \n" +
+                "from \n" +
+                "\tOrders \n" +
+                "\t\t\t\tleft join user  On user.id = reader_id\n" +
+                "left join book on book.id = orders.book_id " +
+                " WHERE \n" +
+                "      book_id = ?";
+        try (Connection con = DBConnection.getDataSource().getConnection()) {
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setInt(1, book.getId());
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                dayCount = (rs.getInt("dayCount"));
+                booknew.setName(rs.getString("book.name"));
+                bookIntegerMap.put(booknew, dayCount);
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return bookIntegerMap;
+    }
+
 }

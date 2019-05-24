@@ -6,10 +6,7 @@ import com.softserve.academy.Entity.User;
 import com.softserve.academy.connectDatabase.DBConnection;
 import org.apache.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -168,4 +165,78 @@ public class CopyDaoImpl implements CopyDao {
         }
         return false;
     }
+
+    @Override
+    public List<Copy> getCopyByBook(Date datefrom, Date dateto) {
+        Book book = new Book();
+        Copy copy = new Copy();
+        ArrayList<Copy> copyArrayList = new ArrayList<>();
+        String query = "Select \n" +
+                "\t\tDISTINCT B.id, B.name, B.Description, page_quantity, C.publication_year, C.publishing_house \n" +
+                "from book AS B \n" +
+                "\t\tleft join copy As C on C.book_id = B.ID\n" +
+                "WHERE\n" +
+                "\tC.publication_year BETWEEN (convert(?, datetime) AND convert(?, date))";
+        try (Connection con = DBConnection.getDataSource().getConnection()) {
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setDate(1, datefrom);
+            pst.setDate(2, dateto);
+            //  pst.executeQuery();
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                copy = new Copy();
+                book = new Book();
+
+                book.setId(rs.getInt(1));
+                book.setName(rs.getString(2));
+                book.setDescription(rs.getString(3));
+                book.setPageQuantity(rs.getInt(4));
+                copy.setBookId(book);
+                copy.setPublicationYear(rs.getInt(5));
+                copy.setPublishingHouse(rs.getString(6));
+                copyArrayList.add(copy);
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return copyArrayList;
+    }
+
+    @Override
+    public List<Copy> getCopyCountisEmty(Book bookID) {
+
+        Book book = new Book();
+        Copy copy = new Copy();
+        ArrayList<Copy> copyArrayList = new ArrayList<>();
+        String query = "Select \n" +
+                "\t\tName, available\n" +
+                "from \n" +
+                "\tbook \n" +
+                "\t\tleft join copy  On book_id = id\n" +
+                "WHERE \n" +
+                "     book_id = ? ";
+        try (Connection con = DBConnection.getDataSource().getConnection()) {
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setInt(1, bookID.getId());
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                copy = new Copy();
+                book = new Book();
+
+                book.setId(rs.getInt(1));
+                book.setName(rs.getString(2));
+                book.setDescription(rs.getString(3));
+                book.setPageQuantity(rs.getInt(4));
+                copy.setBookId(book);
+                copy.setPublicationYear(rs.getInt(5));
+                copy.setPublishingHouse(rs.getString(6));
+                copyArrayList.add(copy);
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return copyArrayList;
+    }
+
+
 }
