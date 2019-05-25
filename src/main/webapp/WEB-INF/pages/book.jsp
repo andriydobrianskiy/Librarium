@@ -77,10 +77,10 @@
                             <c:if test="${user == 'librarian'}">
                                 <td>
                                     <c:if test="${copy.available}">
-                                        <form action="">
+                                        <form action="" class="needs-validation" novalidate>
                                             <input type="hidden" name="copy_id" value="${copy.id}">
                                             <div class="form-check-inline">
-                                                <select class="form-control form-check-input" name="user_select">
+                                                <select class="form-control form-check-input" name="user_select" required>
                                                     <option hidden disabled selected value></option>
                                                     <c:forEach items="${users}" var="user">
                                                         <option value="${user.id}"><c:out value="${user.id} ${user.firstname} ${user.lastName}"/></option>
@@ -106,5 +106,25 @@
 <c:if test="${not empty error}">
     <h2>error</h2>
 </c:if>
+<script>
+  // Disable form submissions if there are invalid fields
+  (function() {
+    'use strict';
+    window.addEventListener('load', function() {
+      // Get the forms we want to add validation styles to
+      var forms = document.getElementsByClassName('needs-validation');
+      // Loop over them and prevent submission
+      var validation = Array.prototype.filter.call(forms, function(form) {
+        form.addEventListener('submit', function(event) {
+          if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add('was-validated');
+        }, false);
+      });
+    }, false);
+  })();
+</script>
 </body>
 </html>
