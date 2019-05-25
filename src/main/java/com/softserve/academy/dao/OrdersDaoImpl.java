@@ -58,4 +58,44 @@ public class OrdersDaoImpl implements OrdersDao {
 
         return ordersCount;
     }
+
+    public int getOrdersCountByBookId(int bookId) {
+        int ordersCount = 0;
+
+        String query = "select count(book_id) as ordersQuantity\n" +
+            "from orders \n" +
+            "where book_id = ?";
+        try (Connection con = DBConnection.getDataSource().getConnection()) {
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setInt(1, bookId);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                ordersCount = rs.getInt("ordersQuantity");
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+
+        return ordersCount;
+    }
+
+    public int getMaxOrdersCount() {
+        int maximum = 0;
+        String query = "select max(ordersQuantity) as maximum\n" +
+            "from \n" +
+            "(select count(book_id) as ordersQuantity\n" +
+            "from orders\n" +
+            "group by book_id) as ordersQuantities";
+        try (Connection con = DBConnection.getDataSource().getConnection()) {
+            PreparedStatement pst = con.prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                maximum = rs.getInt("maximum");
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+
+        return maximum;
+    }
 }

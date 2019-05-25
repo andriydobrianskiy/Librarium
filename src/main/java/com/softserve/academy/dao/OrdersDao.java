@@ -8,4 +8,8 @@ public interface OrdersDao {
     boolean insertOrders(Orders orders);
 
     Map<Integer, Integer> getAllBooksOrdersCount();
+
+    int getOrdersCountByBookId(int bookId);
+
+    int getMaxOrdersCount();
 }

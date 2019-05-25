@@ -40,6 +40,12 @@
                 <p class="text-left" style="font-size: 26px;">
                     <strong>Page quantity:</strong> <c:out value="${book.pageQuantity}"/>
                 </p>
+                <p class="text-left" style="font-size: 26px;">
+                    <strong>Rating:</strong> <c:out value="${book.rating}"/> / 100
+                </p>
+                <p class="text-left" style="font-size: 26px;">
+                    <strong>Was ordered: </strong><c:out value="${book.ordersQuantity}"/> times
+                </p>
             </div>
         </div>
     </div>

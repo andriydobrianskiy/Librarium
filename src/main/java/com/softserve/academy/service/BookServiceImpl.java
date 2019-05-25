@@ -64,6 +64,8 @@ public class BookServiceImpl implements BookService {
         }
         book.setAuthors(authorDao.getAuthorsByBookId(book.getId()));
         book.setImageUrl("photo" + book.getId());
+        book.setOrdersQuantity(ordersDao.getOrdersCountByBookId(bookId));
+        book.setRating(book.getOrdersQuantity() * 100 / ordersDao.getMaxOrdersCount());
         return book;
     }
 
