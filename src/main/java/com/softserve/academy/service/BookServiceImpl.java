@@ -14,14 +14,14 @@ import java.util.Map;
 
 public class BookServiceImpl implements BookService {
     private static final Logger LOGGER = Logger.getLogger(BookServiceImpl.class);
-    private static final BookDao bookDao = new BookDaoImpl();
-    private static final AuthorDao authorDao = new AuthorDaoImpl();
+    private static final BookDao BOOK_DAO = new BookDaoImpl();
+    private static final AuthorDao AUTHOR_DAO = new AuthorDaoImpl();
 
     @Override
     public List<Book> getAllBooks() {
-        List<Book> books = bookDao.getAllBooks();
+        List<Book> books = BOOK_DAO.getAllBooks();
         for (Book book : books) {
-            book.setAuthors(authorDao.getAuthorsByBookId(book.getId()));
+            book.setAuthors(AUTHOR_DAO.getAuthorsByBookId(book.getId()));
             book.setImageUrl("photo" + book.getId());
         }
         return books;
@@ -34,7 +34,7 @@ public class BookServiceImpl implements BookService {
         } else if (user.getId() <= 0) {
             throw new IllegalArgumentException("User ID is not valid");
         }
-        return bookDao.getAllBooksByUser(user);
+        return BOOK_DAO.getAllBooksByUser(user);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class BookServiceImpl implements BookService {
         if ((name == null) || (name.trim().isEmpty())) {
             throw new IllegalArgumentException("Book name is null or empty");
         }
-        Book book = bookDao.getBookByName(name);
+        Book book = BOOK_DAO.getBookByName(name);
         if (book.getId() == 0) {
             throw new IllegalArgumentException("Book with that name is not found");
         }
@@ -54,10 +54,10 @@ public class BookServiceImpl implements BookService {
         if (book == null) {
             throw new IllegalArgumentException("Book is null");
         }
-        if (bookDao.exists(book)) {
+        if (BOOK_DAO.exists(book)) {
             return false;
         } else {
-            return bookDao.insertBook(book);
+            return BOOK_DAO.insertBook(book);
         }
     }
 
@@ -68,7 +68,7 @@ public class BookServiceImpl implements BookService {
         } else if (book.getId() <= 0) {
             throw new IllegalArgumentException("Book ID is not valid");
         }
-        return bookDao.getCountOfBookOrdersByBookId(book.getId());
+        return BOOK_DAO.getCountOfBookOrdersByBookId(book.getId());
     }
 
     @Override
@@ -78,7 +78,7 @@ public class BookServiceImpl implements BookService {
         } else if (book.getId() <= 0) {
             throw new IllegalArgumentException("Book ID is not valid");
         }
-        return bookDao.getAverageTimeOfReadingByBookId(book.getId());
+        return BOOK_DAO.getAverageTimeOfReadingByBookId(book.getId());
     }
 
     @Override
@@ -87,7 +87,7 @@ public class BookServiceImpl implements BookService {
         if ((startDate == null) || (endDate == null)) {
             throw new IllegalArgumentException("Date is null");
         }
-        return bookDao.getOrderedListOfBooksInPeriod(startDate, endDate, false);
+        return BOOK_DAO.getOrderedListOfBooksInPeriod(startDate, endDate, false);
     }
 
     @Override
@@ -96,6 +96,14 @@ public class BookServiceImpl implements BookService {
         if ((startDate == null) || (endDate == null)) {
             throw new IllegalArgumentException("Date is null");
         }
-        return bookDao.getOrderedListOfBooksInPeriod(startDate, endDate, true);
+        return BOOK_DAO.getOrderedListOfBooksInPeriod(startDate, endDate, true);
+    }
+
+    @Override
+    public int getCountBooksPublishingInPeriodOfIndependence(int year) {
+        if (year < 0) {
+            throw new IllegalArgumentException("Year is not valid");
+        }
+        return BOOK_DAO.getCountBooksPublishingInPeriodOfIndependence(year);
     }
 }
