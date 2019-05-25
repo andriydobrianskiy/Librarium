@@ -15,6 +15,8 @@ public interface BookDao {
 
     Book getBookByName(String name);
 
+    Book getBookById(int bookId);
+
     boolean exists(Book book);
 
     Map<Book, Integer> getOrderedListOfBooksInPeriod(Date startDate, Date endDate, boolean sortAsc);

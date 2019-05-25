@@ -17,7 +17,7 @@
         <c:forEach items="${books}" var="book">
             <div class = "col-md-3 d-flex" >
                 <div class="card flex-fill">
-                    <img class="card-img-top" src="${pageContext.request.contextPath}/images/${book.imageUrl}.jpg" alt="Card image">
+                    <img class="card-img-top" src="${pageContext.request.contextPath}/images/${book.imageUrl}.jpg" alt="${book.name} image">
                     <div class="card-body">
                         <h4 class="card-title"><c:out value="${book.name}"/></h4>
                         <p class="card-text">by
@@ -27,7 +27,7 @@
                         </p>
                     </div>
                     <div class="card-footer">
-                        <a href="#" class="btn btn-primary stretched-link">See detailed info</a>
+                        <a href="${pageContext.request.contextPath}/book/${book.id}" class="btn btn-primary stretched-link">See detailed info</a>
                     </div>
                 </div>
             </div>

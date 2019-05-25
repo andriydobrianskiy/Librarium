@@ -14,6 +14,8 @@ public interface BookService {
 
     Book getBookByName(String name) throws IllegalArgumentException;
 
+    Book getBookById(int bookId) throws IllegalArgumentException;
+
     boolean insertBook(Book book) throws IllegalArgumentException;
 
     int getCountOfBookOrders(Book book) throws IllegalArgumentException;

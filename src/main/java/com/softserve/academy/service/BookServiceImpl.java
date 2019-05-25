@@ -38,6 +38,20 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public Book getBookById(int bookId) throws IllegalArgumentException {
+        if (bookId <= 0) {
+            throw new IllegalArgumentException("Book ID is not valid");
+        }
+        Book book = bookDao.getBookById(bookId);
+        if (book.getId() == 0) {
+            throw new IllegalArgumentException("Book with that id is not found");
+        }
+        book.setAuthors(authorDao.getAuthorsByBookId(book.getId()));
+        book.setImageUrl("photo" + book.getId());
+        return book;
+    }
+
+    @Override
     public Book getBookByName(String name) throws IllegalArgumentException {
         if ((name == null) || (name.trim().isEmpty())) {
             throw new IllegalArgumentException("Book name is null or empty");
