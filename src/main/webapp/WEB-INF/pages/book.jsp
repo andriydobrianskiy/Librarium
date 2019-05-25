@@ -11,35 +11,71 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </head>
-<body>
+<body style="background-image: url('${pageContext.request.contextPath}/images/wallpaper.jpg');">
 <c:if test="${empty error}">
-    <c:out value="${book.name}\n${book.description}\n${book.pageQuantity}"/>
-    <img src="${pageContext.request.contextPath}/images/${book.imageUrl}.jpg" alt="${book.name} image">
-    <c:forEach items="${book.authors}" var="author">
-        <c:out value="${author.firstName} ${author.lastName}"/>
-    </c:forEach>
 
-    <div class="container">
-        <h2>All copies by book</h2>
-
-        <table class="table table-striped table-bordered table-hover">
-            <thead class="thead-dark">
-            <tr>
-                <th>Publication year</th>
-                <th>Publishing house</th>
-                <th>Available</th>
-            </tr>
-            </thead>
-            <tbody>
-                <c:forEach items="${copies}" var="copy">
-                    <tr>
-                        <td><c:out value="${copy.publicationYear}"/></td>
-                        <td><c:out value="${copy.publishingHouse}"/></td>
-                        <td><c:out value="${copy.available ? 'Yes': 'No'}"/></td>
-                    </tr>
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1><c:out value="${book.name}"/></h1>
+            <p>
+                <c:forEach items="${book.authors}" var="author">
+                    <c:out value="${author.firstName} ${author.lastName}"/>
                 </c:forEach>
-            </tbody>
-        </table>
+            </p>
+        </div>
+    </div>
+
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class = "col-md-4" >
+                <img class="img-fluid rounded" src="${pageContext.request.contextPath}/images/${book.imageUrl}.jpg" alt="${book.name} image">
+            </div>
+            <div class = "col-md-8" >
+                <h2 class="text-center">Description</h2>
+                <p style="font-size: 26px;">
+                    <c:out value="${book.description}"/>
+                </p>
+                <p class="text-left" style="font-size: 26px;">
+                    <strong>Page quantity:</strong> <c:out value="${book.pageQuantity}"/>
+                </p>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class = "col-md-9" >
+                <h2 class="text-center">All copies by book</h2>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class = "col-md-9 d-flex" >
+
+                <table class="table table-striped table-bordered table-hover">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>Publication year</th>
+                        <th>Publishing house</th>
+                        <th>Available</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach items="${copies}" var="copy">
+                        <tr>
+                            <td><c:out value="${copy.publicationYear}"/></td>
+                            <td><c:out value="${copy.publishingHouse}"/></td>
+                            <td><c:out value="${copy.available ? 'Yes': 'No'}"/></td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
     </div>
 </c:if>
 <c:if test="${not empty error}">
