@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +39,10 @@ public class BooksServlet extends HttpServlet {
             request.setAttribute("error", e.getMessage());
         }
 
+        request.setAttribute("startDate", startDate);
+        request.setAttribute("endDate", endDate);
+        request.setAttribute("unpopularFirst", unpopularFirst);
+
         request.getRequestDispatcher("/WEB-INF/pages/books.jsp").forward(request, response);
     }
 
@@ -44,6 +50,7 @@ public class BooksServlet extends HttpServlet {
         DBConnection dbConnection = new DBConnection();
         dbConnection.connect();
 
+        request.setAttribute("endDate", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
         request.setAttribute("books", BOOK_SERVICE.getAllBooks());
 
         request.getRequestDispatcher("/WEB-INF/pages/books.jsp").forward(request, response);

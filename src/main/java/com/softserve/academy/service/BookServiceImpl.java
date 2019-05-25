@@ -2,28 +2,35 @@ package com.softserve.academy.service;
 
 import com.softserve.academy.Entity.Book;
 import com.softserve.academy.Entity.User;
-import com.softserve.academy.dao.AuthorDao;
-import com.softserve.academy.dao.AuthorDaoImpl;
-import com.softserve.academy.dao.BookDao;
-import com.softserve.academy.dao.BookDaoImpl;
+import com.softserve.academy.dao.*;
 import org.apache.log4j.Logger;
 
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class BookServiceImpl implements BookService {
     private static final Logger LOGGER = Logger.getLogger(BookServiceImpl.class);
     private static final BookDao bookDao = new BookDaoImpl();
     private static final AuthorDao authorDao = new AuthorDaoImpl();
+    private static final OrdersDao ordersDao = new OrdersDaoImpl();
 
     @Override
     public List<Book> getAllBooks() {
         List<Book> books = bookDao.getAllBooks();
         setBooksAuthorsAndImageUrl(books);
+        setBooksOrdersQuantity(books);
+        setBookRating(books);
         return books;
+    }
+
+    private void setBooksOrdersQuantity(final List<Book> books) {
+        if (books == null) {
+            return;
+        }
+        Map<Integer, Integer> ordersCount = ordersDao.getAllBooksOrdersCount();
+        for (Book book : books) {
+            book.setOrdersQuantity(ordersCount.getOrDefault(book.getId(), 0));
+        }
     }
 
     private void setBooksAuthorsAndImageUrl(final List<Book> books) {
@@ -107,13 +114,21 @@ public class BookServiceImpl implements BookService {
     }
 
 
-    private void setBookRating(final List<Book> orderedBooks) {
-        if ((orderedBooks == null) || (orderedBooks.isEmpty())) {
+    private void setBookRating(final List<Book> /*orderedBooks*/books) {
+        if ((/*orderedBooks*/books == null) || (/*orderedBooks*/books.isEmpty())) {
             return;
         }
-        int maxOrderCount = Integer.max(orderedBooks.get(0).getOrdersQuantity(),
-            orderedBooks.get(orderedBooks.size() - 1).getOrdersQuantity());
-        for (Book book : orderedBooks) {
+
+        int maxOrderCount = Collections.max(books, new Comparator<Book>() {
+            @Override
+            public int compare(Book o1, Book o2) {
+                return o1.getOrdersQuantity()  - o2.getOrdersQuantity();
+            }
+        }).getOrdersQuantity();
+
+        /*int maxOrderCount = Integer.max(orderedBooks.get(0).getOrdersQuantity(),
+            orderedBooks.get(orderedBooks.size() - 1).getOrdersQuantity());*/
+        for (Book book : /*orderedBooks*/books) {
             book.setRating(book.getOrdersQuantity() * 100 / maxOrderCount);
         }
     }

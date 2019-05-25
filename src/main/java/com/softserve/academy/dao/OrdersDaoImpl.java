@@ -6,7 +6,10 @@ import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class OrdersDaoImpl implements OrdersDao {
 
@@ -37,4 +40,22 @@ public class OrdersDaoImpl implements OrdersDao {
         return false;
     }
 
+    public Map<Integer, Integer> getAllBooksOrdersCount() {
+        Map<Integer, Integer> ordersCount = new HashMap<>();
+
+        String query = "select book_id, count(book_id) as ordersQuantity\n" +
+            "from orders \n" +
+            "group by book_id";
+        try (Connection con = DBConnection.getDataSource().getConnection()) {
+            PreparedStatement pst = con.prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                ordersCount.put(rs.getInt("book_id"), rs.getInt("ordersQuantity"));
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+
+        return ordersCount;
+    }
 }

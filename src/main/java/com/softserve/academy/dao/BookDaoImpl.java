@@ -7,10 +7,8 @@ import com.softserve.academy.connectDatabase.DBConnection;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.Date;
+import java.util.*;
 
 public class BookDaoImpl implements BookDao {
     private static final Logger LOGGER = Logger.getLogger(BookDaoImpl.class);
@@ -298,5 +296,4 @@ public class BookDaoImpl implements BookDao {
         }
         return bookIntegerMap;
     }
-
 }

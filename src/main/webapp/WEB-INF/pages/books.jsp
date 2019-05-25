@@ -32,12 +32,12 @@
         <div class="col-md-7 offset-2">
             <form method="post" class="form-inline needs-validation" action="${pageContext.request.contextPath}/books" novalidate>
                 <label for="startDate" class="mr-sm-2">From:</label>
-                <input type="date" class="form-control mb-2 mr-sm-2" id="startDate" name="startDate" required>
+                <input type="date" class="form-control mb-2 mr-sm-2" value="${startDate}" id="startDate" name="startDate" required>
                 <label for="endDate" class="mr-sm-2">To:</label>
-                <input type="date" class="form-control mb-2 mr-sm-2" id="endDate" name="endDate" required>
+                <input type="date" class="form-control mb-2 mr-sm-2" value="${endDate}" id="endDate" name="endDate" required>
                 <div class="form-check mb-2 mr-sm-2">
                     <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" id="unpopularFirst" name="unpopularFirst" value="unpopular"> Unpopular first
+                        <input class="form-check-input" type="checkbox" id="unpopularFirst" name="unpopularFirst" value="unpopularFirst"> Unpopular first
                     </label>
                 </div>
                 <button type="submit" class="btn btn-outline-success mb-2">Sort by rating</button>
@@ -59,7 +59,8 @@
                         </p>
                     </div>
                     <div class="card-footer">
-                        <a href="${pageContext.request.contextPath}/book/${book.id}" class="btn btn-primary stretched-link">See detailed info</a>
+                        <strong>Rating: </strong><c:out value="${book.rating}"/> / 100
+                        <a href="${pageContext.request.contextPath}/book/${book.id}" style="float:right" class="btn btn-primary stretched-link">See detailed info</a>
                     </div>
                 </div>
             </div>
@@ -75,6 +76,9 @@
         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
       });
     });
+    <c:if test="${not empty unpopularFirst}">
+    $("#unpopularFirst").prop('checked', true);
+    </c:if>
   });
 </script>
 </body>
