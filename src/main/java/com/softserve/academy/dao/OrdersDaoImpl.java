@@ -1,12 +1,12 @@
 package com.softserve.academy.dao;
 
+import com.mysql.cj.x.protobuf.MysqlxCrud;
 import com.softserve.academy.Entity.Orders;
 import com.softserve.academy.connectDatabase.DBConnection;
 import org.apache.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDate;
 
 public class OrdersDaoImpl implements OrdersDao {
 
@@ -35,6 +35,22 @@ public class OrdersDaoImpl implements OrdersDao {
             LOGGER.error(e.getMessage(), e);
         }
         return false;
+    }
+
+    public int getQuantityOfOrdersInAllPeriod() {
+        int quantityOfOrders = 0;
+        String query = "SELECT count(id) as quantity FROM orders";
+        try (Connection con = DBConnection.getDataSource().getConnection()) {
+            PreparedStatement pst = con.prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                quantityOfOrders = (rs.getInt("quantity"));
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+
+        return quantityOfOrders;
     }
 
 }
