@@ -19,7 +19,7 @@ public class UserDaoImpl implements UserDao {
         User user;
         ArrayList<User> userArrayList = new ArrayList<>();
         String query = "select id, firstname, lastName," +
-            "phone, address, birthday_date" +
+            "phone, address, birthday_date " +
             "from user";
 
         try (Connection con = DBConnection.getDataSource().getConnection()) {
@@ -30,7 +30,7 @@ public class UserDaoImpl implements UserDao {
                 user = new User();
                 user.setId(rs.getInt("id"));
                 user.setFirstname(rs.getString("firstname"));
-                user.setLastName(rs.getString("lastname"));
+                user.setLastName(rs.getString("lastName"));
                 user.setPhone(rs.getString("phone"));
                 user.setAddress(rs.getString("address"));
                 user.setBirthday_date(rs.getDate("birthday_date"));

@@ -61,6 +61,10 @@
                         <th>Publication year</th>
                         <th>Publishing house</th>
                         <th>Available</th>
+
+                        <c:if test="${user == 'librarian'}">
+                            <th>Order</th>
+                        </c:if>
                     </tr>
                     </thead>
                     <tbody>
@@ -69,6 +73,27 @@
                             <td><c:out value="${copy.publicationYear}"/></td>
                             <td><c:out value="${copy.publishingHouse}"/></td>
                             <td><c:out value="${copy.available ? 'Yes': 'No'}"/></td>
+
+                            <c:if test="${user == 'librarian'}">
+                                <td>
+                                    <c:if test="${copy.available}">
+                                        <form action="">
+                                            <input type="hidden" name="copy_id" value="${copy.id}">
+                                            <div class="form-check-inline">
+                                                <select class="form-control form-check-input" name="user_select">
+                                                    <option hidden disabled selected value></option>
+                                                    <c:forEach items="${users}" var="user">
+                                                        <option value="${user.id}"><c:out value="${user.id} ${user.firstname} ${user.lastName}"/></option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+
+                                            <button type="submit" class="btn btn-outline-success">Order</button>
+                                        </form>
+                                    </c:if>
+                                </td>
+                            </c:if>
+
                         </tr>
                     </c:forEach>
                     </tbody>

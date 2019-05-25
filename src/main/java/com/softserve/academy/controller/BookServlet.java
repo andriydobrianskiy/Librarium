@@ -2,7 +2,9 @@ package com.softserve.academy.controller;
 
 import com.softserve.academy.Entity.Book;
 import com.softserve.academy.Entity.Copy;
+import com.softserve.academy.Entity.User;
 import com.softserve.academy.connectDatabase.DBConnection;
+import com.softserve.academy.dao.UserDaoImpl;
 import com.softserve.academy.service.BookServiceImpl;
 import com.softserve.academy.service.CopyServiceImpl;
 import org.apache.log4j.Logger;
@@ -43,6 +45,11 @@ public class BookServlet extends HttpServlet {
             request.setAttribute("error", e.getMessage());
         }
 
+        List<User> users = new UserDaoImpl().getAllUsers();
+        request.setAttribute("users", users);
+
+        // then it will be changed to looking for users role
+        request.setAttribute("user", "librarian");
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/pages/book.jsp");
         rd.forward(request, response);
     }
