@@ -1,7 +1,5 @@
 package com.softserve.academy.controller;
 
-import com.softserve.academy.Entity.Orders;
-import com.softserve.academy.Entity.User;
 import com.softserve.academy.connectDatabase.DBConnection;
 import com.softserve.academy.service.*;
 
@@ -31,7 +29,7 @@ public class MainController extends HttpServlet {
             BOOK_SERVICE.getCountBooksPublishingInPeriodOfIndependence(1991));
         request.setAttribute("AverageReaderAge", USER_SERVICE.getUserStatisticAverageAge());
         request.setAttribute("QuantityOfOrdersInAllPeriod", ORDERS_SERVICE.getQuantityOfOrdersInAllPeriod());
-//        request.setAttribute("AverageTimeOfUsingLibrary", USER_SERVICE.getUserAverageTimeOfUsingLibrary());
+        request.setAttribute("AverageTimeOfUsingLibrary", USER_SERVICE.getUserAverageTimeOfUsingLibrary());
         request.getRequestDispatcher("/WEB-INF/pages/index.jsp").forward(request, response);
     }
 }

@@ -77,6 +77,8 @@
     Books in period of independence = ${BooksQuantityInIndependencePeriod}
     Average reader age = ${AverageReaderAge}
     Average Time Of Using Library = ${AverageTimeOfUsingLibrary}
+    Quantity Of Orders In All Period = ${QuantityOfOrdersInAllPeriod}
+    Average Time Of Using Library = ${AverageTimeOfUsingLibrary}
 </div>
 
 <div id="footer">

@@ -145,37 +145,38 @@ public class UserDaoImpl implements UserDao {
         }
         int averageAge = 0;
         if (counterNumberOfUsers != 0) {
-             averageAge = (int) (totalDaysDifferent / 365 / counterNumberOfUsers);
+            averageAge = (int) (totalDaysDifferent / 365 / counterNumberOfUsers);
         }
         return averageAge;
     }
 
     @Override
     public int getUserAverageTimeOfUsingLibrary() {
+        LocalDate currentDate = LocalDate.now();
+        List<LocalDate> userCreatingDays = new ArrayList<>();
 
-        int dayCount = 0;
-        String query = " Select \n" +
-            "\t\tROUND(AVG(X.ID), 2) AS dayCount from(\n" +
-            "     Select \n" +
-            "\t\t\tCOUNT(user.id) AS ID, \n" +
-            "            reader_id\n" +
-            "\tfrom orders  \n" +
-            "\t\t\t\tleft join user  on user.id = reader_id\n" +
-            "             \n" +
-            "\t WHERE\n" +
-            "\t\t created_at BETWEEN (? AND ?)\n" +
-            "          GROUP BY reader_id\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t) AS X";
+        String query = " SELECT  created_at FROM user where contact_type_id = 3";
         try (Connection con = DBConnection.getDataSource().getConnection()) {
             PreparedStatement pst = con.prepareStatement(query);
             ResultSet rs = pst.executeQuery();
-            if (rs.next()) {
-                dayCount = rs.getInt("dayCount");
+            while (rs.next()) {
+                userCreatingDays.add(rs.getDate("created_at").toLocalDate());
             }
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
-        return dayCount;
+        long totalDaysDifferent = 0;
+        long counterNumberOfUsers = 0;
+        for (LocalDate userDate : userCreatingDays) {
+            long daysBetween = DAYS.between(userDate, currentDate);
+            totalDaysDifferent += daysBetween;
+            counterNumberOfUsers++;
+        }
+        int averageTime = 0;
+        if (counterNumberOfUsers != 0) {
+            averageTime = (int) (totalDaysDifferent / counterNumberOfUsers);
+        }
+        return averageTime;
     }
 
     @Override
