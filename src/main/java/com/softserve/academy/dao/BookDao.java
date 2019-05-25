@@ -19,7 +19,7 @@ public interface BookDao {
 
     boolean exists(Book book);
 
-    Map<Book, Integer> getOrderedListOfBooksInPeriod(Date startDate, Date endDate, boolean sortAsc);
+    List<Book> getOrderedListOfBooksInPeriod(Date startDate, Date endDate, boolean sortAsc);
 
     boolean insertBook(Book book);
 

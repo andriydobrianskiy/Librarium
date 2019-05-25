@@ -17,6 +17,8 @@ public class Book {
     private int pageQuantity;
     private String imageUrl;
     private List<Author> authors;
+    private int ordersQuantity;
+    private int rating;
 
     public Book() {
     }
@@ -85,6 +87,22 @@ public class Book {
         this.authors = authors;
     }
 
+    public int getOrdersQuantity() {
+        return ordersQuantity;
+    }
+
+    public void setOrdersQuantity(int ordersQuantity) {
+        this.ordersQuantity = ordersQuantity;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -100,6 +118,12 @@ public class Book {
             return false;
         }
         if (pageQuantity != book.pageQuantity) {
+            return false;
+        }
+        if (ordersQuantity != book.ordersQuantity) {
+            return false;
+        }
+        if (rating != book.rating) {
             return false;
         }
         if (createdAt != null ? !createdAt.equals(book.createdAt) : book.createdAt != null) {
@@ -130,6 +154,8 @@ public class Book {
         result = 31 * result + pageQuantity;
         result = 31 * result + (imageUrl != null ? imageUrl.hashCode() : 0);
         result = 31 * result + (authors != null ? authors.hashCode() : 0);
+        result = 31 * result + ordersQuantity;
+        result = 31 * result + rating;
         return result;
     }
 

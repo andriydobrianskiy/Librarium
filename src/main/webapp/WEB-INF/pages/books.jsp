@@ -10,14 +10,41 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/jQueryValidator.js"></script>
+    <style>
+        #searchLine {
+            padding: 20px;
+        }
+        #configurator {
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #ededed;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
 <div class="container-fluid">
-    <div class="row">
+    <div class="row" id="configurator">
         <div class="col-md-3">
             <input class="form-control" id="searchLine" type="text" placeholder="Search...">
         </div>
+        <div class="col-md-7 offset-2">
+            <form method="post" class="form-inline needs-validation" action="${pageContext.request.contextPath}/books" novalidate>
+                <label for="startDate" class="mr-sm-2">From:</label>
+                <input type="date" class="form-control mb-2 mr-sm-2" id="startDate" name="startDate" required>
+                <label for="endDate" class="mr-sm-2">To:</label>
+                <input type="date" class="form-control mb-2 mr-sm-2" id="endDate" name="endDate" required>
+                <div class="form-check mb-2 mr-sm-2">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" id="unpopularFirst" name="unpopularFirst" value="unpopular"> Unpopular first
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-outline-success mb-2">Sort by rating</button>
+            </form>
+        </div>
     </div>
+
     <div class="row">
         <c:forEach items="${books}" var="book">
             <div class = "col-md-3 d-flex" id="booksCards">

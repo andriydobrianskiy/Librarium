@@ -39,7 +39,6 @@ public class BookDaoImpl implements BookDao {
 
         return bookArrayList;
     }
-
     @Override
     public List<Book> getAllBooksByUser(User user) {
         Book book;
@@ -202,16 +201,15 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public Map<Book, Integer> getOrderedListOfBooksInPeriod(Date startDate, Date endDate, boolean sortAsc) {
+    public List<Book> getOrderedListOfBooksInPeriod(Date startDate, Date endDate, boolean sortAsc) {
         Book book;
-        int bookCount;
-        Map<Book, Integer> countBooksInPeriod = new HashMap<>();
+        List<Book> orderedBooks = new ArrayList<>();
 
         String query = "select count(book_id) as booksQuantity, " +
-            "book.id, book.name, book.description, book.page_quantity" +
-            "from orders left join book on book.id = orders.book_id" +
-            "where orders.take_date Between (? and ?)" +
-            "Group by orders.book_ID" +
+            "book.id, book.name, book.description, book.page_quantity " +
+            "from orders left join book on book.id = orders.book_id " +
+            "where orders.take_date Between ? and ? " +
+            "Group by orders.book_ID " +
             "Order by COUNT(book_id) ";
         if (sortAsc) {
             query += "ASC";
@@ -220,23 +218,24 @@ public class BookDaoImpl implements BookDao {
         }
         try (Connection con = DBConnection.getDataSource().getConnection()) {
             PreparedStatement pst = con.prepareStatement(query);
-            pst.setDate(1, startDate);
-            pst.setDate(2, endDate);
+            pst.setTimestamp(1, new java.sql.Timestamp(startDate.getTime()));
+            pst.setTimestamp(2, new java.sql.Timestamp(endDate.getTime()));
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 book = new Book();
-                bookCount = rs.getInt("booksQuantity");
+                book.setOrdersQuantity(rs.getInt("booksQuantity"));
                 book.setId(rs.getInt("book.id"));
                 book.setName(rs.getString("book.name"));
                 book.setDescription(rs.getString("book.description"));
                 book.setPageQuantity(rs.getInt("book.page_quantity"));
-                countBooksInPeriod.put(book, bookCount);
+
+                orderedBooks.add(book);
             }
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
 
-        return countBooksInPeriod;
+        return orderedBooks;
     }
 
     @Override

@@ -9,6 +9,8 @@ import com.softserve.academy.dao.BookDaoImpl;
 import org.apache.log4j.Logger;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -20,11 +22,18 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<Book> getAllBooks() {
         List<Book> books = bookDao.getAllBooks();
+        setBooksAuthorsAndImageUrl(books);
+        return books;
+    }
+
+    private void setBooksAuthorsAndImageUrl(final List<Book> books) {
+        if (books == null) {
+            return;
+        }
         for (Book book : books) {
             book.setAuthors(authorDao.getAuthorsByBookId(book.getId()));
             book.setImageUrl("photo" + book.getId());
         }
-        return books;
     }
 
     @Override
@@ -60,6 +69,8 @@ public class BookServiceImpl implements BookService {
         if (book.getId() == 0) {
             throw new IllegalArgumentException("Book with that name is not found");
         }
+        book.setAuthors(authorDao.getAuthorsByBookId(book.getId()));
+        book.setImageUrl("photo" + book.getId());
         return book;
     }
 
@@ -95,21 +106,32 @@ public class BookServiceImpl implements BookService {
         return bookDao.getAverageTimeOfReadingByBookId(book.getId());
     }
 
-    @Override
-    public Map<Book, Integer> getMostPopularBooksInPeriod(Date startDate, Date endDate)
-        throws IllegalArgumentException {
-        if ((startDate == null) || (endDate == null)) {
-            throw new IllegalArgumentException("Date is null");
+
+    private void setBookRating(final List<Book> orderedBooks) {
+        if ((orderedBooks == null) || (orderedBooks.isEmpty())) {
+            return;
         }
-        return bookDao.getOrderedListOfBooksInPeriod(startDate, endDate, false);
+        int maxOrderCount = Integer.max(orderedBooks.get(0).getOrdersQuantity(),
+            orderedBooks.get(orderedBooks.size() - 1).getOrdersQuantity());
+        for (Book book : orderedBooks) {
+            book.setRating(book.getOrdersQuantity() * 100 / maxOrderCount);
+        }
     }
 
     @Override
-    public Map<Book, Integer> getMostUnpopularBooksInPeriod(Date startDate, Date endDate)
+    public List<Book> getOrderedBooksInPeriod(String startDate, String endDate, String unpopularFirst)
         throws IllegalArgumentException {
-        if ((startDate == null) || (endDate == null)) {
+        if ((startDate == null) || (endDate == null) ||
+            (startDate.isEmpty()) || (endDate.isEmpty())) {
             throw new IllegalArgumentException("Date is null");
         }
-        return bookDao.getOrderedListOfBooksInPeriod(startDate, endDate, true);
+        boolean sortAsc = unpopularFirst == null ? false : true;
+
+        List<Book> orderedBooks = bookDao.getOrderedListOfBooksInPeriod(Date.valueOf(startDate),
+            Date.valueOf(endDate), sortAsc);
+
+        setBookRating(orderedBooks);
+        setBooksAuthorsAndImageUrl(orderedBooks);
+        return orderedBooks;
     }
 }

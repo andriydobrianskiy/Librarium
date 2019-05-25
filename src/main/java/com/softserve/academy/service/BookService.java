@@ -22,9 +22,6 @@ public interface BookService {
 
     int getAverageTimeOfReading(Book book) throws IllegalArgumentException;
 
-    Map<Book, Integer> getMostPopularBooksInPeriod(Date startDate, Date endDate)
-        throws IllegalArgumentException;
-
-    Map<Book, Integer> getMostUnpopularBooksInPeriod(Date startDate, Date endDate)
+    List<Book> getOrderedBooksInPeriod(String startDate, String endDate, String unpopularFirst)
         throws IllegalArgumentException;
 }
