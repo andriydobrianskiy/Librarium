@@ -14,10 +14,15 @@
 <body>
 <div class="container-fluid">
     <div class="row">
+        <div class="col-md-3">
+            <input class="form-control" id="searchLine" type="text" placeholder="Search...">
+        </div>
+    </div>
+    <div class="row">
         <c:forEach items="${books}" var="book">
-            <div class = "col-md-3 d-flex" >
+            <div class = "col-md-3 d-flex" id="booksCards">
                 <div class="card flex-fill">
-                    <img class="card-img-top" src="${pageContext.request.contextPath}/images/${book.imageUrl}.jpg" alt="${book.name} image">
+                    <img class="card-img-top img-fluid" src="${pageContext.request.contextPath}/images/${book.imageUrl}.jpg" alt="${book.name} image">
                     <div class="card-body">
                         <h4 class="card-title"><c:out value="${book.name}"/></h4>
                         <p class="card-text">by
@@ -34,5 +39,16 @@
         </c:forEach>
     </div>
 </div>
+
+<script>
+  $(document).ready(function(){
+    $("#searchLine").on("keyup", function() {
+      var value = $(this).val().toLowerCase();
+      $("#booksCards div:first-child").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+    });
+  });
+</script>
 </body>
 </html>
