@@ -16,7 +16,7 @@ public interface CopyService {
 
     List<Copy> getAllCopiesWithOrdersCountByBook(Book book) throws IllegalArgumentException;
 
-    boolean orderCopy(Copy copy) throws IllegalArgumentException;
+    boolean orderCopy(int copyId) throws IllegalArgumentException;
 
-    boolean returnCopy(Copy copy) throws IllegalArgumentException;
+    boolean returnCopy(int copyId) throws IllegalArgumentException;
 }

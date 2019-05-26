@@ -23,9 +23,24 @@ public class BookServlet extends HttpServlet {
     private static final BookService BOOK_SERVICE = new BookServiceImpl();
     private static final CopyService COPY_SERVICE = new CopyServiceImpl();
     private static final UserService USER_SERVICE = new UserServiceImpl();
+    private static final OrdersService ORDERS_SERVICE = new OrdersServiceImpl();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        DBConnection dbConnection = new DBConnection();
+        dbConnection.connect();
 
+        String copy_id = request.getParameter("copy_id");
+        String reader_id = request.getParameter("reader_select");
+        String book_id = request.getParameter("book_id");
+        // TODO get user(librarian) id from session - for now id = 4
+        try {
+            boolean success = ORDERS_SERVICE.orderCopy(copy_id, reader_id, book_id, 4);
+            LOGGER.debug("Ordering copy is successful: " + success);
+        } catch (IllegalArgumentException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+
+        doGet(request, response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -54,7 +69,7 @@ public class BookServlet extends HttpServlet {
 
         request.setAttribute("users", USER_SERVICE.getAllUsers());
 
-        // then it will be changed to looking for users role
+        // TODO check user(librarian) role from session
         request.setAttribute("user", "librarian");
 
         request.getRequestDispatcher("/WEB-INF/pages/book.jsp").forward(request, response);

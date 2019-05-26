@@ -113,13 +113,14 @@
                             <c:if test="${user == 'librarian'}">
                                 <td>
                                     <c:if test="${copy.available}">
-                                        <form action="" class="needs-validation" novalidate>
+                                        <form method="post" action="${pageContext.request.contextPath}/book/${book.id}" class="needs-validation" novalidate>
                                             <input type="hidden" name="copy_id" value="${copy.id}">
+                                            <input type="hidden" name="book_id" value="${book.id}">
                                             <div class="form-check-inline">
-                                                <select class="form-control form-check-input" name="user_select" required>
+                                                <select class="form-control form-check-input" name="reader_select" required>
                                                     <option hidden disabled selected value></option>
-                                                    <c:forEach items="${users}" var="user">
-                                                        <option value="${user.id}"><c:out value="${user.id} ${user.firstname} ${user.lastName}"/></option>
+                                                    <c:forEach items="${users}" var="reader">
+                                                        <option value="${reader.id}"><c:out value="${reader.id} ${reader.firstname} ${reader.lastName}"/></option>
                                                     </c:forEach>
                                                 </select>
                                             </div>

@@ -146,7 +146,7 @@ public class CopyDaoImpl implements CopyDao {
     }
 
     @Override
-    public boolean changeCopyAvailability(Copy copy, boolean toAvailable) {
+    public boolean changeCopyAvailability(int copyId, boolean toAvailable) {
         String query = "update copy\n" +
             "set available = ?\n" +
             "where id = ?";
@@ -154,7 +154,7 @@ public class CopyDaoImpl implements CopyDao {
             PreparedStatement pst = con.prepareStatement(query);
 
             pst.setInt(1, toAvailable ? 1 : 0);
-            pst.setInt(2, copy.getId());
+            pst.setInt(2, /*copy.getId()*/copyId);
 
             int rowsAffected = pst.executeUpdate();
             if (rowsAffected == 1) {

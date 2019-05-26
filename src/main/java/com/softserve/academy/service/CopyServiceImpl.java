@@ -54,22 +54,18 @@ public class CopyServiceImpl implements CopyService {
     }
 
     @Override
-    public boolean orderCopy(Copy copy) throws IllegalArgumentException {
-        if (copy == null) {
-            throw new IllegalArgumentException("Copy is null");
-        } else if (copy.getId() <= 0) {
+    public boolean orderCopy(int copyId) throws IllegalArgumentException {
+        if (copyId <= 0) {
             throw new IllegalArgumentException("Copy ID is not valid");
         }
-        return copyDao.changeCopyAvailability(copy, false);
+        return copyDao.changeCopyAvailability(copyId, false);
     }
 
     @Override
-    public boolean returnCopy(Copy copy) throws IllegalArgumentException {
-        if (copy == null) {
-            throw new IllegalArgumentException("Copy is null");
-        } else if (copy.getId() <= 0) {
+    public boolean returnCopy(int copyId) throws IllegalArgumentException {
+        if (copyId <= 0) {
             throw new IllegalArgumentException("Copy ID is not valid");
         }
-        return copyDao.changeCopyAvailability(copy, true);
+        return copyDao.changeCopyAvailability(copyId, true);
     }
 }
