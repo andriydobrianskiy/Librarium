@@ -12,6 +12,11 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="${pageContext.request.contextPath}/js/jQueryValidator.js"></script>
+    <style>
+        .bookStatistics {
+            font-size: 21px;
+        }
+    </style>
 </head>
 <body style="background-image: url('${pageContext.request.contextPath}/images/wallpaper.jpg');">
 <c:if test="${empty error}">
@@ -38,31 +43,31 @@
                 <p style="font-size: 26px;">
                     <c:out value="${book.description}"/>
                 </p>
-                <p class="text-left" style="font-size: 26px;">
+                <p class="text-left bookStatistics">
                     <strong>Page quantity:</strong> <c:out value="${book.pageQuantity}"/>
                 </p>
-                <p class="text-left" style="font-size: 26px;">
+                <p class="text-left bookStatistics">
                     <strong>Rating:</strong> <c:out value="${book.rating}"/> / 100
                 </p>
-                <p class="text-left" style="font-size: 26px;">
+                <p class="text-left bookStatistics">
                     <strong>Was ordered: </strong><c:out value="${book.ordersQuantity}"/> times
                 </p>
-                <p class="text-left" style="font-size: 26px;">
+                <p class="text-left bookStatistics">
                     <strong>Number of copies: </strong>
                     <c:if test="${not empty copies}"><c:out value="${fn:length(copies)}"/></c:if>
                     <c:if test="${empty copies}"><c:out value="0"/></c:if>
                 </p>
-                <p class="text-left" style="font-size: 26px;">
+                <p class="text-left bookStatistics">
                     <strong>Average time of reading: </strong><c:out value="${averageTimeOfReading}"/> days
                 </p>
-                <p class="text-left" style="font-size: 26px;">
+                <p class="text-left bookStatistics">
                     <strong>Average reader age: </strong><c:out value="${averageUserAgeByBook}"/> years
                 </p>
 
                 <c:forEach items="${book.authors}" var="author" varStatus="status">
-                    <p class="text-left" style="font-size: 26px;">
+                    <p class="text-left bookStatistics">
                         <strong>Average reader age for </strong>
-                        <c:out value="${author.firstName} ${author.lastName}"/>
+                        <em><c:out value="${author.firstName} ${author.lastName}"/></em>
                         <strong> books: </strong>
                         <c:out value="${averageUserAgesForAuthors[status.index]}"/>
                     </p>
@@ -76,19 +81,20 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class = "col-md-9" >
+            <div class = "col-md-12" >
                 <h2 class="text-center">All copies by book</h2>
             </div>
         </div>
 
         <div class="row">
-            <div class = "col-md-9 d-flex" >
+            <div class = "col-md-12 d-flex" >
 
                 <table class="table table-striped table-bordered table-hover">
                     <thead class="thead-dark">
                     <tr>
                         <th>Publication year</th>
                         <th>Publishing house</th>
+                        <th>Orders quantity</th>
                         <th>Available</th>
 
                         <c:if test="${user == 'librarian'}">
@@ -101,6 +107,7 @@
                         <tr>
                             <td><c:out value="${copy.publicationYear}"/></td>
                             <td><c:out value="${copy.publishingHouse}"/></td>
+                            <td><c:out value="${copy.ordersQuantity}"/></td>
                             <td><c:out value="${copy.available ? 'Yes': 'No'}"/></td>
 
                             <c:if test="${user == 'librarian'}">

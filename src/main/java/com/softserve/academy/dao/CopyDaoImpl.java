@@ -114,10 +114,10 @@ public class CopyDaoImpl implements CopyDao {
     }
 
     @Override
-    public Map<Copy, Integer> getCountOfCopiesOrdersByBookId(int bookId) {
+    public List<Copy> getAllCopiesWithOrdersCountByBookId(int bookId) {
         Copy copy;
-        int copyOrdersCount;
-        Map<Copy, Integer> countOrdersForCopies = new HashMap<>();
+        List<Copy> copies = new ArrayList<>();
+
         String query = "select count(orders.copy_id) as copyOrdersCount, copy.id, \n" +
             "\tcopy.publication_year, copy.publishing_house, copy.available\n" +
             "from orders left join copy on copy.id = orders.copy_id\n" +
@@ -130,19 +130,19 @@ public class CopyDaoImpl implements CopyDao {
             while (rs.next()) {
                 copy = new Copy();
 
-                copyOrdersCount = rs.getInt("copyOrdersCount");
+                copy.setOrdersQuantity(rs.getInt("copyOrdersCount"));
                 copy.setId(rs.getInt("copy.id"));
                 copy.setPublicationYear(rs.getInt("copy.publication_year"));
                 copy.setPublishingHouse(rs.getString("copy.publishing_house"));
                 copy.setAvailable(rs.getBoolean("copy.available"));
 
-                countOrdersForCopies.put(copy, copyOrdersCount);
+                copies.add(copy);
             }
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
 
-        return countOrdersForCopies;
+        return copies;
     }
 
     @Override

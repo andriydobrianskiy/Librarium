@@ -14,7 +14,7 @@ public interface CopyService {
 
     boolean insertCopy(Copy copy) throws IllegalArgumentException;
 
-    Map<Copy, Integer> getCountOfCopiesOrdersByBook(Book book) throws IllegalArgumentException;
+    List<Copy> getAllCopiesWithOrdersCountByBook(Book book) throws IllegalArgumentException;
 
     boolean orderCopy(Copy copy) throws IllegalArgumentException;
 

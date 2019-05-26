@@ -43,14 +43,14 @@ public class CopyServiceImpl implements CopyService {
     }
 
     @Override
-    public Map<Copy, Integer> getCountOfCopiesOrdersByBook(Book book)
+    public List<Copy> getAllCopiesWithOrdersCountByBook(Book book)
         throws IllegalArgumentException {
         if (book == null) {
             throw new IllegalArgumentException("Book is null");
         } else if (book.getId() <= 0) {
             throw new IllegalArgumentException("Book ID is not valid");
         }
-        return copyDao.getCountOfCopiesOrdersByBookId(book.getId());
+        return copyDao.getAllCopiesWithOrdersCountByBookId(book.getId());
     }
 
     @Override
