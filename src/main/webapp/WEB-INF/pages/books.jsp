@@ -26,10 +26,10 @@
 <body>
 <div class="container-fluid">
     <div class="row" id="configurator">
-        <div class="col-md-3">
+        <div class="col-md-2">
             <input class="form-control" id="searchLine" type="text" placeholder="Search...">
         </div>
-        <div class="col-md-7 offset-2">
+        <div class="col-md-8 offset-2">
             <form method="post" class="form-inline needs-validation" action="${pageContext.request.contextPath}/books" novalidate>
                 <label for="startDate" class="mr-sm-2">From:</label>
                 <input type="date" class="form-control mb-2 mr-sm-2" value="${startDate}" id="startDate" name="startDate" required>
@@ -41,6 +41,7 @@
                     </label>
                 </div>
                 <button type="submit" class="btn btn-outline-success mb-2">Sort by rating</button>
+                <a href="${pageContext.request.contextPath}/books" class="btn btn-outline-danger mb-2" style="margin-left: 20px;">Reset</a>
             </form>
         </div>
     </div>
