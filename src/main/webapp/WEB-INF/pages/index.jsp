@@ -16,20 +16,13 @@
             <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-hover-white w3-theme-d2"
                href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
             <a href="#" class="w3-bar-item w3-button w3-teal"><i class="fa fa-home w3-margin-right"></i>Home</a>
-            <a href="#books" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Books</a>
-            <a href="#users" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Users</a>
+            <a href="books" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Books</a>
+            <a href="users" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Users</a>
 
-            <a href="#" class="w3-bar-item w3-button w3-hide-small w3-right w3-hover-teal" title="Search"><i
-                    class="fa fa-search"></i></a>
+            <a href="searchPage" class="w3-bar-item w3-button w3-right w3-hover-white" title="Search">
+                <img src="../../resources/images/icons8-google-web-search-30.jpg"></a>
         </div>
 
-        <!-- Navbar on small screens -->
-        <div id="navDemo" class="w3-bar-block w3-theme-d2 w3-hide w3-hide-large w3-hide-medium">
-            <a href="#librarium/books" class="w3-bar-item w3-button">Books</a>
-            <a href="#users" class="w3-bar-item w3-button">Users</a>
-            <a href="#" class="w3-bar-item w3-button"
-               img src="../../resources/images/icons8-search-folder-48.png" >Search</a>
-        </div>
     </div>
 
     <!-- Image Header -->
@@ -37,23 +30,22 @@
         <img src="../../resources/images/librarium-home-page-demo.jpg" alt="boat"
              style="width:100%;min-height:350px;max-height:600px;">
     </div>
-
-
 </div>
 
 <!-- Work Row -->
 <div class="w3-row-padding w3-padding-large w3-theme-l5" id="work">
     <h1 class="w3-wide w3-padding-large w3-center">LIBRARIUM</h1>
-    <div class="w3-twothird w3-padding-large"style="font-style: italic;">
+    <div class="w3-twothird w3-padding-large" style="font-style: italic;">
         <h3>The library of your dream developed by Andrii Dobrianskyi, Olha Lozinska,
-        Volodymyr Oseredchuk. Here you can find the book for every taste by picking
-        it up by name, author and rating. On the LIBRARIUM website, you can see if
-        the book you have selected is available for order, then order this book and
+            Volodymyr Oseredchuk. Here you can find the book for every taste by picking
+            it up by name, author and rating. On the LIBRARIUM website, you can see if
+            the book you have selected is available for order, then order this book and
             enjoy it for a month.</h3>
     </div>
+
     <div>
         <div class="w3-third  w3-center w3-white">
-            <div class="w3-container w3-padding-large w3-theme-l5"style="font-style: italic;">
+            <div class="w3-container w3-padding-large w3-theme-l5" style="font-style: italic;">
                 <h2>Statistical info</h2>
                 <p>${BooksQuantityInIndependencePeriod} books publicated in Independence period.</p>
                 <p>Average age of ours readers is ${AverageReaderAge} years.</p>
@@ -65,29 +57,28 @@
 </div>
 
 
-    <!-- The Contacts Section -->
-    <div class="w3-container w3-theme-l3 w3-padding-64"
-         style="width: 100%" id="contacts">
-        <h2 class="w3-wide w3-left-align">CONTACTS</h2>
-        <div class="w3-row w3-padding-32">
-            <div class="w3-col m6 w3-large">
+<!-- The Contacts Section -->
+<div class="w3-container w3-theme-l3 w3-padding-64"
+     style="width: 100%" id="contacts">
+    <h2 class="w3-wide w3-left-align">CONTACTS</h2>
+    <div class="w3-row w3-padding-32">
+        <div class="w3-col m6 w3-large">
 
-                <i class="fa fa-map-marker" style="width: 30px"></i> Lviv, UA<br>
-                <i class="fa fa-phone" style="width: 30px"></i> Phone: +30 867 67 3409<br>
-                <i class="fa fa-envelope" style="width: 30px"> </i> Email:
-                info@softserveinc.com<br>
+            <i class="fa fa-map-marker" style="width: 30px"></i> Lviv, UA<br>
+            <i class="fa fa-phone" style="width: 30px"></i> Phone: +30 867 67 3409<br>
+            <i class="fa fa-envelope" style="width: 30px"> </i> Email:
+            info@softserveinc.com<br>
 
-            </div>
-            <div class="w3-col m6 w3-large">
-
-                <i class="fa fa-working-hours" style="width: 30px"></i> Working hours: 10:00-20:00<br>
-                <p></p>
-                <i class="fa fa-welcome" style="width: 30px"></i> Welcome!<br>
-            </div>
         </div>
+        <div class="w3-col m6 w3-large">
 
+            <i class="fa fa-working-hours" style="width: 30px"></i> Working hours: 10:00-20:00<br>
+            <p></p>
+            <i class="fa fa-welcome" style="width: 30px"></i> Welcome!<br>
+        </div>
     </div>
 
+</div>
 
 
 </div>
@@ -95,7 +86,6 @@
 
 <div id="footer">
     <%--<jsp:include page="footer.jsp"/>--%>
-    <hr/>
     <div style="text-align: center; background-color: black;
   color: white; padding: 10px;">
         <p>SoftServe 2019</p>
