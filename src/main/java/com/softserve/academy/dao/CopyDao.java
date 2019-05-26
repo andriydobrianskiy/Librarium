@@ -6,7 +6,6 @@ import com.softserve.academy.Entity.User;
 
 import java.sql.Date;
 import java.util.List;
-import java.util.Map;
 
 public interface CopyDao {
     List<Copy> getAllCopiesByBookId(int bookId);
@@ -19,7 +18,7 @@ public interface CopyDao {
 
     boolean changeCopyAvailability(int copyId, boolean toAvailable);
 
-    List<Copy> getCopyByBook (Date datefrom, Date dateto);
+    List<Copy> getCopyByBook(Date datefrom, Date dateto);
 
     List<Copy> getCopyCountisEmty(Book book);
 }

@@ -1,6 +1,5 @@
 package com.softserve.academy.dao;
 
-import com.softserve.academy.Entity.Orders;
 
 import java.sql.Date;
 import java.util.Map;

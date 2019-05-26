@@ -1,6 +1,5 @@
 package com.softserve.academy.dao;
 
-import com.softserve.academy.Entity.Orders;
 import com.softserve.academy.connectDatabase.DBConnection;
 import org.apache.log4j.Logger;
 

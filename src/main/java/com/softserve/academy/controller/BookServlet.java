@@ -1,21 +1,16 @@
 package com.softserve.academy.controller;
 
 import com.softserve.academy.Entity.Book;
-import com.softserve.academy.Entity.Copy;
-import com.softserve.academy.Entity.User;
 import com.softserve.academy.connectDatabase.DBConnection;
-import com.softserve.academy.dao.UserDaoImpl;
 import com.softserve.academy.service.*;
 import org.apache.log4j.Logger;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 @WebServlet(name = "BookServlet", urlPatterns = {"/book/*"})
 public class BookServlet extends HttpServlet {

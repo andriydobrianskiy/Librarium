@@ -37,6 +37,7 @@ public class BookDaoImpl implements BookDao {
 
         return bookArrayList;
     }
+
     @Override
     public List<Book> getAllBooksByUser(User user) {
         Book book;
@@ -241,12 +242,12 @@ public class BookDaoImpl implements BookDao {
         Book book = new Book();
         ArrayList<Book> bookArrayList = new ArrayList<>();
         String query = "Select\n" +
-                "\t\tB.id, B.Name, B.Description, B.Page_Quantity, A.firstname, A.lastname\n" +
-                "from  book AS B\n" +
-                "               Left join bookauthor AS BA ON BA.book_id = B.id\n" +
-                "               Left JOIN author AS A ON A.id = BA.author_id\n" +
-                "WHERE" +
-                "  A.id = ?";
+            "\t\tB.id, B.Name, B.Description, B.Page_Quantity, A.firstname, A.lastname\n" +
+            "from  book AS B\n" +
+            "               Left join bookauthor AS BA ON BA.book_id = B.id\n" +
+            "               Left JOIN author AS A ON A.id = BA.author_id\n" +
+            "WHERE" +
+            "  A.id = ?";
         try (Connection con = DBConnection.getDataSource().getConnection()) {
             PreparedStatement pst = con.prepareStatement(query);
             pst.setInt(1, author.getId());

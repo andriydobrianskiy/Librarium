@@ -8,11 +8,10 @@ import com.softserve.academy.dao.CopyDaoImpl;
 import org.apache.log4j.Logger;
 
 import java.util.List;
-import java.util.Map;
 
 public class CopyServiceImpl implements CopyService {
     private static final Logger LOGGER = Logger.getLogger(BookServiceImpl.class);
-    private static final CopyDao copyDao = new CopyDaoImpl();
+    private static final CopyDao COPY_DAO = new CopyDaoImpl();
 
     @Override
     public List<Copy> getAllCopiesByBook(Book book) throws IllegalArgumentException {
@@ -21,7 +20,7 @@ public class CopyServiceImpl implements CopyService {
         } else if (book.getId() <= 0) {
             throw new IllegalArgumentException("Book ID is not valid");
         }
-        return copyDao.getAllCopiesByBookId(book.getId());
+        return COPY_DAO.getAllCopiesByBookId(book.getId());
     }
 
     @Override
@@ -31,7 +30,7 @@ public class CopyServiceImpl implements CopyService {
         } else if (user.getId() <= 0) {
             throw new IllegalArgumentException("User ID is not valid");
         }
-        return copyDao.getAllCopiesByUser(user);
+        return COPY_DAO.getAllCopiesByUser(user);
     }
 
     @Override
@@ -39,7 +38,7 @@ public class CopyServiceImpl implements CopyService {
         if (copy == null) {
             throw new IllegalArgumentException("Copy is null");
         }
-        return copyDao.insertCopy(copy);
+        return COPY_DAO.insertCopy(copy);
     }
 
     @Override
@@ -50,7 +49,7 @@ public class CopyServiceImpl implements CopyService {
         } else if (book.getId() <= 0) {
             throw new IllegalArgumentException("Book ID is not valid");
         }
-        return copyDao.getAllCopiesWithOrdersCountByBookId(book.getId());
+        return COPY_DAO.getAllCopiesWithOrdersCountByBookId(book.getId());
     }
 
     @Override
@@ -58,7 +57,7 @@ public class CopyServiceImpl implements CopyService {
         if (copyId <= 0) {
             throw new IllegalArgumentException("Copy ID is not valid");
         }
-        return copyDao.changeCopyAvailability(copyId, false);
+        return COPY_DAO.changeCopyAvailability(copyId, false);
     }
 
     @Override
@@ -66,6 +65,6 @@ public class CopyServiceImpl implements CopyService {
         if (copyId <= 0) {
             throw new IllegalArgumentException("Copy ID is not valid");
         }
-        return copyDao.changeCopyAvailability(copyId, true);
+        return COPY_DAO.changeCopyAvailability(copyId, true);
     }
 }

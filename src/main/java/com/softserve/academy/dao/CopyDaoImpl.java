@@ -8,9 +8,7 @@ import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class CopyDaoImpl implements CopyDao {
     private static final Logger LOGGER = Logger.getLogger(CopyDaoImpl.class);
@@ -172,11 +170,11 @@ public class CopyDaoImpl implements CopyDao {
         Copy copy = new Copy();
         ArrayList<Copy> copyArrayList = new ArrayList<>();
         String query = "Select \n" +
-                "\t\tDISTINCT B.id, B.name, B.Description, page_quantity, C.publication_year, C.publishing_house \n" +
-                "from book AS B \n" +
-                "\t\tleft join copy As C on C.book_id = B.ID\n" +
-                "WHERE\n" +
-                "\tC.publication_year BETWEEN (convert(?, datetime) AND convert(?, date))";
+            "\t\tDISTINCT B.id, B.name, B.Description, page_quantity, C.publication_year, C.publishing_house \n" +
+            "from book AS B \n" +
+            "\t\tleft join copy As C on C.book_id = B.ID\n" +
+            "WHERE\n" +
+            "\tC.publication_year BETWEEN (convert(?, datetime) AND convert(?, date))";
         try (Connection con = DBConnection.getDataSource().getConnection()) {
             PreparedStatement pst = con.prepareStatement(query);
             pst.setDate(1, datefrom);
@@ -209,12 +207,12 @@ public class CopyDaoImpl implements CopyDao {
         Copy copy = new Copy();
         ArrayList<Copy> copyArrayList = new ArrayList<>();
         String query = "Select \n" +
-                "\t\tName, available\n" +
-                "from \n" +
-                "\tbook \n" +
-                "\t\tleft join copy  On book_id = id\n" +
-                "WHERE \n" +
-                "     book_id = ? ";
+            "\t\tName, available\n" +
+            "from \n" +
+            "\tbook \n" +
+            "\t\tleft join copy  On book_id = id\n" +
+            "WHERE \n" +
+            "     book_id = ? ";
         try (Connection con = DBConnection.getDataSource().getConnection()) {
             PreparedStatement pst = con.prepareStatement(query);
             pst.setInt(1, bookID.getId());

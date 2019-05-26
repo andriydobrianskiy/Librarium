@@ -3,9 +3,7 @@ package com.softserve.academy.service;
 import com.softserve.academy.Entity.Book;
 import com.softserve.academy.Entity.User;
 
-import java.sql.Date;
 import java.util.List;
-import java.util.Map;
 
 public interface BookService {
     List<Book> getAllBooks();

@@ -5,7 +5,6 @@ import com.softserve.academy.Entity.Copy;
 import com.softserve.academy.Entity.User;
 
 import java.util.List;
-import java.util.Map;
 
 public interface CopyService {
     List<Copy> getAllCopiesByBook(Book book) throws IllegalArgumentException;

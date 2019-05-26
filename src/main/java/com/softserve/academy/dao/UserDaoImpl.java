@@ -122,9 +122,9 @@ public class UserDaoImpl implements UserDao {
         int averangeAge = 0;
         Map<User, Integer> mapaverangeAge = new HashMap<>();
         String query = "Select \n" +
-                "ROUND(AVG(datediff(convert(current_timestamp, date), CONVERT(birthday_date, date))), 0) AS AverangeAge  \n" +
-                "from \n" +
-                "\tuser " ;
+            "ROUND(AVG(datediff(convert(current_timestamp, date), CONVERT(birthday_date, date))), 0) AS AverangeAge  \n" +
+            "from \n" +
+            "\tuser ";
 
         try (Connection con = DBConnection.getDataSource().getConnection()) {
             PreparedStatement pst = con.prepareStatement(query);
@@ -141,16 +141,17 @@ public class UserDaoImpl implements UserDao {
 
         return averangeAge;
     }
-@Override
-    public Map<User,Integer> getUserStatisticCreateAt(boolean sortAsc) {
+
+    @Override
+    public Map<User, Integer> getUserStatisticCreateAt(boolean sortAsc) {
         User user = new User();
         int usedDay = 0;
         Map<User, Integer> userMap = new HashMap<>();
         String query = " Select \n" +
-                "ROUND(datediff(convert(current_timestamp, date), CONVERT(created_at, date)), 0) AS UsedDay, firstname, lastname\n" +
-                "from \n" +
-                "\tuser " +
-                "Order by UsedDay ";
+            "ROUND(datediff(convert(current_timestamp, date), CONVERT(created_at, date)), 0) AS UsedDay, firstname, lastname\n" +
+            "from \n" +
+            "\tuser " +
+            "Order by UsedDay ";
         if (sortAsc) {
             query += "ASC";
         } else {
@@ -163,7 +164,7 @@ public class UserDaoImpl implements UserDao {
                 user = new User();
                 user.setFirstname(rs.getString("firstname"));
                 user.setLastName(rs.getString("lastname"));
-                usedDay =(rs.getInt("UsedDay"));
+                usedDay = (rs.getInt("UsedDay"));
                 userMap.put(user, usedDay);
             }
 
@@ -180,21 +181,21 @@ public class UserDaoImpl implements UserDao {
 
         int dayCount = 0;
         String query = " Select \n" +
-                "\t\tROUND(AVG(X.ID), 2) AS dayCount from(\n" +
-                "     Select \n" +
-                "\t\t\tCOUNT(user.id) AS ID, \n" +
-                "            reader_id\n" +
-                "\tfrom orders  \n" +
-                "\t\t\t\tleft join user  on user.id = reader_id\n" +
-                "             \n" +
-                "\t WHERE\n" +
-                "\t\t created_at BETWEEN (? AND ?)\n" +
-                "          GROUP BY reader_id\n" +
-                "\t\t\t\t\t\t\t\t\t\t\t) AS X";
+            "\t\tROUND(AVG(X.ID), 2) AS dayCount from(\n" +
+            "     Select \n" +
+            "\t\t\tCOUNT(user.id) AS ID, \n" +
+            "            reader_id\n" +
+            "\tfrom orders  \n" +
+            "\t\t\t\tleft join user  on user.id = reader_id\n" +
+            "             \n" +
+            "\t WHERE\n" +
+            "\t\t created_at BETWEEN (? AND ?)\n" +
+            "          GROUP BY reader_id\n" +
+            "\t\t\t\t\t\t\t\t\t\t\t) AS X";
         try (Connection con = DBConnection.getDataSource().getConnection()) {
             PreparedStatement pst = con.prepareStatement(query);
             pst.setDate(1, dateFrom);
-            pst.setDate(2,dateTo);
+            pst.setDate(2, dateTo);
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 dayCount = rs.getInt("dayCount");
@@ -209,14 +210,14 @@ public class UserDaoImpl implements UserDao {
     public int getAuthorByUserAverageAge(Author author) {
         int dayCount = 0;
         String query = "\t\tSELECT ROUND(AVG(datediff(convert(current_timestamp, date), CONVERT(birthday_date, date))), 0) As dayCount\n" +
-                "from \n" +
-                "\tOrders \n" +
-                "\t\t\t\tleft join user On user.id = orders.reader_id\n" +
-                "                left join bookauthor On bookauthor.book_id = orders.Book_id\n" +
-                "                left join author ON author.id = bookauthor.author_id\n" +
-                "                 \n" +
-                " WHERE \n" +
-                "      author.id = ?";
+            "from \n" +
+            "\tOrders \n" +
+            "\t\t\t\tleft join user On user.id = orders.reader_id\n" +
+            "                left join bookauthor On bookauthor.book_id = orders.Book_id\n" +
+            "                left join author ON author.id = bookauthor.author_id\n" +
+            "                 \n" +
+            " WHERE \n" +
+            "      author.id = ?";
         try (Connection con = DBConnection.getDataSource().getConnection()) {
             PreparedStatement pst = con.prepareStatement(query);
             pst.setInt(1, author.getId());

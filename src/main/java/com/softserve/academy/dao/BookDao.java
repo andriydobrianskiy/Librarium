@@ -6,7 +6,6 @@ import com.softserve.academy.Entity.User;
 
 import java.sql.Date;
 import java.util.List;
-import java.util.Map;
 
 public interface BookDao {
     List<Book> getAllBooksByUser(User user);

@@ -57,6 +57,7 @@ public class DBConnection implements InterfaceDataBase {
         }
 
     }
+
     /*private synchronized boolean checkConnection() {
         try {
             Class.forName(DB_DRIVERCLASS);
