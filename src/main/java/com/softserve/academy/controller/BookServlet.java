@@ -44,6 +44,8 @@ public class BookServlet extends HttpServlet {
         try {
             Book book = BOOK_SERVICE.getBookById(bookId);
             request.setAttribute("book", book);
+            request.setAttribute("averageTimeOfReading", BOOK_SERVICE.getAverageTimeOfReading(book));
+            request.setAttribute("averageUserAgeByBook", BOOK_SERVICE.getUserAverageAgeByBookId(book));
             request.setAttribute("copies", COPY_SERVICE.getAllCopiesByBook(book));
         } catch (IllegalArgumentException e) {
             LOGGER.error(e.getMessage(), e);

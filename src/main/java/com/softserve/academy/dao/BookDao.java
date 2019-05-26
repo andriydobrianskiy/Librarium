@@ -29,5 +29,5 @@ public interface BookDao {
 
     List<Book> getBooksByAuthors(Author author);
 
-    Map<Book, Integer> getBookByUserAverageAge(Book book);
+    int getBookByUserAverageAge(Book book);
 }

@@ -270,30 +270,26 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public Map<Book, Integer> getBookByUserAverageAge(Book book) {
-        Book booknew = new Book();
-        Map<Book, Integer> bookIntegerMap = new HashMap<>();
+    public int getBookByUserAverageAge(Book book) {
         int dayCount = 0;
-        String query = " Select \n" +
-                "\t\tROUND(AVG(datediff(convert(current_timestamp, date), CONVERT(birthday_date, date))), 0) AS dayCount, book.name \n" +
-                "from \n" +
-                "\tOrders \n" +
-                "\t\t\t\tleft join user  On user.id = reader_id\n" +
-                "left join book on book.id = orders.book_id " +
-                " WHERE \n" +
-                "      book_id = ?";
+
+        String query = "Select ROUND(AVG(datediff(convert(current_timestamp, date), CONVERT(birthday_date, date))), 0) AS dayCount\n" +
+            "from\n" +
+            "Orders\n" +
+            "left join user  On user.id = reader_id\n" +
+            "WHERE\n" +
+            "book_id = ?";
         try (Connection con = DBConnection.getDataSource().getConnection()) {
             PreparedStatement pst = con.prepareStatement(query);
             pst.setInt(1, book.getId());
             ResultSet rs = pst.executeQuery();
-            while (rs.next()) {
+            if (rs.next()) {
                 dayCount = (rs.getInt("dayCount"));
-                booknew.setName(rs.getString("book.name"));
-                bookIntegerMap.put(booknew, dayCount);
             }
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
-        return bookIntegerMap;
+
+        return dayCount;
     }
 }

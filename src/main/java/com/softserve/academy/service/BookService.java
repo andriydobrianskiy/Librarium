@@ -24,4 +24,6 @@ public interface BookService {
 
     List<Book> getOrderedBooksInPeriod(String startDate, String endDate, String unpopularFirst)
         throws IllegalArgumentException;
+
+    int getUserAverageAgeByBookId(Book book) throws IllegalArgumentException;
 }

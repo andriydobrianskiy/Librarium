@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <html>
 <head>
@@ -45,6 +46,17 @@
                 </p>
                 <p class="text-left" style="font-size: 26px;">
                     <strong>Was ordered: </strong><c:out value="${book.ordersQuantity}"/> times
+                </p>
+                <p class="text-left" style="font-size: 26px;">
+                    <strong>Number of copies: </strong>
+                    <c:if test="${not empty copies}"><c:out value="${fn:length(copies)}"/></c:if>
+                    <c:if test="${empty copies}"><c:out value="0"/></c:if>
+                </p>
+                <p class="text-left" style="font-size: 26px;">
+                    <strong>Average time of reading: </strong><c:out value="${averageTimeOfReading}"/> days
+                </p>
+                <p class="text-left" style="font-size: 26px;">
+                    <strong>Average reader age: </strong><c:out value="${averageUserAgeByBook}"/> years
                 </p>
             </div>
         </div>

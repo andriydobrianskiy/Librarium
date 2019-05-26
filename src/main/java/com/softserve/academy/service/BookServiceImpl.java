@@ -151,4 +151,13 @@ public class BookServiceImpl implements BookService {
         setBooksAuthorsAndImageUrl(orderedBooks);
         return orderedBooks;
     }
+
+    public int getUserAverageAgeByBookId(Book book) throws IllegalArgumentException {
+        if (book == null) {
+            throw new IllegalArgumentException("Book is null");
+        } else if (book.getId() <= 0) {
+            throw new IllegalArgumentException("Book ID is not valid");
+        }
+        return bookDao.getBookByUserAverageAge(book) / 365;
+    }
 }
