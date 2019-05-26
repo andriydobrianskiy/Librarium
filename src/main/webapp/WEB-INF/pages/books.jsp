@@ -66,6 +66,16 @@
             </div>
         </c:forEach>
     </div>
+
+    <c:if test="${empty books}">
+        <div class="container-fluid">
+            <div class="row">
+                <div class = "col-md-12" >
+                    <h2 class="text-center">There are no books ordered in that period</h2>
+                </div>
+            </div>
+        </div>
+    </c:if>
 </div>
 
 <script>

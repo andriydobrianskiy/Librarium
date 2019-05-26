@@ -141,7 +141,8 @@
     </div>
 </c:if>
 <c:if test="${not empty error}">
-    <h2>error</h2>
+    <h2><c:out value="${error}"/></h2>
+    <a href="${pageContext.request.contextPath}/books" class="btn btn-primary">Go back</a>
 </c:if>
 
 </body>

@@ -119,10 +119,10 @@ public class CopyDaoImpl implements CopyDao {
         List<Copy> copies = new ArrayList<>();
 
         String query = "select count(orders.copy_id) as copyOrdersCount, copy.id, \n" +
-            "\tcopy.publication_year, copy.publishing_house, copy.available\n" +
-            "from orders left join copy on copy.id = orders.copy_id\n" +
-            "where orders.book_id = ?\n" +
-            "group by orders.copy_id";
+            "copy.publication_year, copy.publishing_house, copy.available\n" +
+            "from copy left join orders on copy.id = orders.copy_id\n" +
+            "where copy.book_id = ?\n" +
+            "group by copy.id";
         try (Connection con = DBConnection.getDataSource().getConnection()) {
             PreparedStatement pst = con.prepareStatement(query);
             pst.setInt(1, bookId);
