@@ -1,7 +1,6 @@
 package com.softserve.academy.controller;
 
 import com.softserve.academy.Entity.Book;
-import com.softserve.academy.connectDatabase.DBConnection;
 import com.softserve.academy.service.*;
 import org.apache.log4j.Logger;
 
@@ -21,9 +20,6 @@ public class BookServlet extends HttpServlet {
     private static final OrdersService ORDERS_SERVICE = new OrdersServiceImpl();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        DBConnection dbConnection = new DBConnection();
-        dbConnection.connect();
-
         String copy_id = request.getParameter("copy_id");
         String reader_id = request.getParameter("reader_select");
         String book_id = request.getParameter("book_id");
@@ -39,9 +35,6 @@ public class BookServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        DBConnection dbConnection = new DBConnection();
-        dbConnection.connect();
-
         int bookId = 0;
         try {
             bookId = Integer.parseInt(request.getPathInfo().substring(1));

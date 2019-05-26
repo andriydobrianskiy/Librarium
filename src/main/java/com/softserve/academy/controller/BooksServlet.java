@@ -1,6 +1,5 @@
 package com.softserve.academy.controller;
 
-import com.softserve.academy.connectDatabase.DBConnection;
 import com.softserve.academy.service.BookService;
 import com.softserve.academy.service.BookServiceImpl;
 import org.apache.log4j.Logger;
@@ -20,9 +19,6 @@ public class BooksServlet extends HttpServlet {
     private static final BookService BOOK_SERVICE = new BookServiceImpl();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        DBConnection dbConnection = new DBConnection();
-        dbConnection.connect();
-
         String startDate = request.getParameter("startDate");
         String endDate = request.getParameter("endDate");
         String unpopularFirst = request.getParameter("unpopularFirst");
@@ -42,9 +38,6 @@ public class BooksServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        DBConnection dbConnection = new DBConnection();
-        dbConnection.connect();
-
         request.setAttribute("endDate", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
         request.setAttribute("books", BOOK_SERVICE.getAllBooks());
 
