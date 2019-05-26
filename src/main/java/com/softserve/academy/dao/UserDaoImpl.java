@@ -213,7 +213,7 @@ public class UserDaoImpl implements UserDao {
                 "\tOrders \n" +
                 "\t\t\t\tleft join user On user.id = orders.reader_id\n" +
                 "                left join bookauthor On bookauthor.book_id = orders.Book_id\n" +
-                "                left join author ON author.id = .author_id\n" +
+                "                left join author ON author.id = bookauthor.author_id\n" +
                 "                 \n" +
                 " WHERE \n" +
                 "      author.id = ?";

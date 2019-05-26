@@ -152,6 +152,7 @@ public class BookServiceImpl implements BookService {
         return orderedBooks;
     }
 
+    @Override
     public int getUserAverageAgeByBookId(Book book) throws IllegalArgumentException {
         if (book == null) {
             throw new IllegalArgumentException("Book is null");

@@ -58,6 +58,16 @@
                 <p class="text-left" style="font-size: 26px;">
                     <strong>Average reader age: </strong><c:out value="${averageUserAgeByBook}"/> years
                 </p>
+
+                <c:forEach items="${book.authors}" var="author" varStatus="status">
+                    <p class="text-left" style="font-size: 26px;">
+                        <strong>Average reader age for </strong>
+                        <c:out value="${author.firstName} ${author.lastName}"/>
+                        <strong> books: </strong>
+                        <c:out value="${averageUserAgesForAuthors[status.index]}"/>
+                    </p>
+                </c:forEach>
+
             </div>
         </div>
     </div>

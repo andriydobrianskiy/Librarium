@@ -5,10 +5,7 @@ import com.softserve.academy.Entity.Copy;
 import com.softserve.academy.Entity.User;
 import com.softserve.academy.connectDatabase.DBConnection;
 import com.softserve.academy.dao.UserDaoImpl;
-import com.softserve.academy.service.BookService;
-import com.softserve.academy.service.BookServiceImpl;
-import com.softserve.academy.service.CopyService;
-import com.softserve.academy.service.CopyServiceImpl;
+import com.softserve.academy.service.*;
 import org.apache.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
@@ -25,6 +22,7 @@ public class BookServlet extends HttpServlet {
     private static final Logger LOGGER = Logger.getLogger(BookServlet.class);
     private static final BookService BOOK_SERVICE = new BookServiceImpl();
     private static final CopyService COPY_SERVICE = new CopyServiceImpl();
+    private static final UserService USER_SERVICE = new UserServiceImpl();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -46,14 +44,14 @@ public class BookServlet extends HttpServlet {
             request.setAttribute("book", book);
             request.setAttribute("averageTimeOfReading", BOOK_SERVICE.getAverageTimeOfReading(book));
             request.setAttribute("averageUserAgeByBook", BOOK_SERVICE.getUserAverageAgeByBookId(book));
+            request.setAttribute("averageUserAgesForAuthors", USER_SERVICE.getUsersAverageAgesForAuthors(book.getAuthors()));
             request.setAttribute("copies", COPY_SERVICE.getAllCopiesByBook(book));
         } catch (IllegalArgumentException e) {
             LOGGER.error(e.getMessage(), e);
             request.setAttribute("error", e.getMessage());
         }
 
-        List<User> users = new UserDaoImpl().getAllUsers();
-        request.setAttribute("users", users);
+        request.setAttribute("users", USER_SERVICE.getAllUsers());
 
         // then it will be changed to looking for users role
         request.setAttribute("user", "librarian");
