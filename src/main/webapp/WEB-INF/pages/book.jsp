@@ -104,7 +104,7 @@
                         <th>Orders quantity</th>
                         <th>Available</th>
 
-                        <c:if test="${user == 'librarian'}">
+                        <c:if test="${not empty user}">
                             <th>Order</th>
                         </c:if>
                     </tr>
@@ -117,7 +117,7 @@
                             <td><c:out value="${copy.ordersQuantity}"/></td>
                             <td><c:out value="${copy.available ? 'Yes': 'No'}"/></td>
 
-                            <c:if test="${user == 'librarian'}">
+                            <c:if test="${not empty user}">
                                 <td>
                                     <c:if test="${copy.available}">
                                         <form method="post" action="${pageContext.request.contextPath}/book/${book.id}" class="needs-validation" novalidate>
