@@ -14,13 +14,17 @@ public interface UserDao {
 
     List<User> getAllUsers();
 
+    User getUserById (int userid);
+
     int getDaysOfUsingLibraryByUser(User user);
 
     int getUserStatisticAverageAge();
 
+    int getUserAverageTimeOfUsingLibrary();
+
     Map<User, Integer> getUserStatisticCreateAt(boolean sortAsc);
 
-    int getUserAverageNumber (Date dateFrom, Date dateTo);
+    int getUserAverageNumber(Date dateFrom, Date dateTo);
 
     int getAuthorByUserAverageAge(Author author);
 }

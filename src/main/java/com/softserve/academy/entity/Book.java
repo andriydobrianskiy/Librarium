@@ -1,6 +1,7 @@
 package com.softserve.academy.Entity;
 
 import java.sql.Date;
+import java.util.List;
 
 /**
  * Class representing Book table in the Librarium database
@@ -14,6 +15,10 @@ public class Book {
     private String name;
     private String description;
     private int pageQuantity;
+    private String imageUrl;
+    private List<Author> authors;
+    private int ordersQuantity;
+    private int rating;
 
     public Book() {
     }
@@ -66,6 +71,38 @@ public class Book {
         this.pageQuantity = pageQuantity;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public List<Author> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(List<Author> authors) {
+        this.authors = authors;
+    }
+
+    public int getOrdersQuantity() {
+        return ordersQuantity;
+    }
+
+    public void setOrdersQuantity(int ordersQuantity) {
+        this.ordersQuantity = ordersQuantity;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -83,6 +120,12 @@ public class Book {
         if (pageQuantity != book.pageQuantity) {
             return false;
         }
+        if (ordersQuantity != book.ordersQuantity) {
+            return false;
+        }
+        if (rating != book.rating) {
+            return false;
+        }
         if (createdAt != null ? !createdAt.equals(book.createdAt) : book.createdAt != null) {
             return false;
         }
@@ -92,7 +135,13 @@ public class Book {
         if (name != null ? !name.equals(book.name) : book.name != null) {
             return false;
         }
-        return description != null ? description.equals(book.description) : book.description == null;
+        if (description != null ? !description.equals(book.description) : book.description != null) {
+            return false;
+        }
+        if (imageUrl != null ? !imageUrl.equals(book.imageUrl) : book.imageUrl != null) {
+            return false;
+        }
+        return authors != null ? authors.equals(book.authors) : book.authors == null;
     }
 
     @Override
@@ -103,6 +152,10 @@ public class Book {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + pageQuantity;
+        result = 31 * result + (imageUrl != null ? imageUrl.hashCode() : 0);
+        result = 31 * result + (authors != null ? authors.hashCode() : 0);
+        result = 31 * result + ordersQuantity;
+        result = 31 * result + rating;
         return result;
     }
 

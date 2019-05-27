@@ -6,7 +6,6 @@ import com.softserve.academy.Entity.User;
 
 import java.sql.Date;
 import java.util.List;
-import java.util.Map;
 
 public interface BookDao {
     List<Book> getAllBooksByUser(User user);
@@ -15,9 +14,11 @@ public interface BookDao {
 
     Book getBookByName(String name);
 
+    Book getBookById(int bookId);
+
     boolean exists(Book book);
 
-    Map<Book, Integer> getOrderedListOfBooksInPeriod(Date startDate, Date endDate, boolean sortAsc);
+    List<Book> getOrderedListOfBooksInPeriod(Date startDate, Date endDate, boolean sortAsc);
 
     boolean insertBook(Book book);
 
@@ -27,5 +28,7 @@ public interface BookDao {
 
     List<Book> getBooksByAuthors(Author author);
 
-    Map<Book, Integer> getBookByUserAverageAge(Book book);
+    int getBookByUserAverageAge(Book book);
+
+    int getCountBooksPublishingInPeriodOfIndependence(int year);
 }

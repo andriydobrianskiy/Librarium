@@ -21,12 +21,12 @@ public class DBConnection implements InterfaceDataBase {
     private static final String DB_PASS = DB_PROPERTIES.getProperty("jdbc.password");
     private static final String DB_DRIVERCLASS = DB_PROPERTIES.getProperty("jdbc.driverClassName");
 
-    private Connection connection;
+    private static Connection connection;
 
     private static ComboPooledDataSource dataSource;
 
 
-    private void createPoolConnections() {
+    private static void createPoolConnections() {
         try {
             dataSource = new ComboPooledDataSource();
 
@@ -43,8 +43,8 @@ public class DBConnection implements InterfaceDataBase {
 
     }
 
-    @Override
-    public boolean connect() {
+    //@Override
+    public static boolean connect() {
         try {
             Class.forName(DB_DRIVERCLASS);
             connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
@@ -57,6 +57,7 @@ public class DBConnection implements InterfaceDataBase {
         }
 
     }
+
     /*private synchronized boolean checkConnection() {
         try {
             Class.forName(DB_DRIVERCLASS);
@@ -68,8 +69,8 @@ public class DBConnection implements InterfaceDataBase {
         }
     }
 */
-    @Override
-    public void disconnect() {
+    //@Override
+    public static void disconnect() {
         try {
             connection.close();
         } catch (SQLException e) {
@@ -79,6 +80,9 @@ public class DBConnection implements InterfaceDataBase {
     }
 
     public static DataSource getDataSource() {
+        if (dataSource == null) {
+            DBConnection.connect();
+        }
         return dataSource;
     }
 /*

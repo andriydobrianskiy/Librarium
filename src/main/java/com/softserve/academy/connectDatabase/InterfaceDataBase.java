@@ -1,7 +1,7 @@
 package com.softserve.academy.connectDatabase;
 
 public interface InterfaceDataBase {
-    boolean connect();
+   // boolean connect();
 
-    void disconnect();
+   // void disconnect();
 }

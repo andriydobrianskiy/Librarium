@@ -1,16 +1,16 @@
 package com.softserve.academy.dao;
 
+import com.mysql.cj.x.protobuf.MysqlxCrud;
 import com.softserve.academy.Entity.Book;
 import com.softserve.academy.Entity.Copy;
+import com.softserve.academy.Entity.Orders;
 import com.softserve.academy.Entity.User;
 import com.softserve.academy.connectDatabase.DBConnection;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class CopyDaoImpl implements CopyDao {
     private static final Logger LOGGER = Logger.getLogger(CopyDaoImpl.class);
@@ -74,12 +74,39 @@ public class CopyDaoImpl implements CopyDao {
         return false;
     }
 
+    /*@Override
+    public Copy getCopyByID(String copyid) {
+        Copy copy = null;
+        ArrayList<Copy> copyArrayList = new ArrayList<>();
+        String query = "Select id from copy where id = ?";
+        try (Connection con = DBConnection.getDataSource().getConnection()) {
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setInt(1, Integer.parseInt(copyid));
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+
+                copy = new Copy();
+
+
+                copy.setId(rs.getInt("id"));
+
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+
+        return copy;
+    }*/
+
     @Override
     public List<Copy> getAllCopiesByUser(User user) {
         Book book;
         Copy copy;
+        Orders orders;
         ArrayList<Copy> copyArrayList = new ArrayList<>();
-        String query = "select book.id, book.name, book.description, book.page_quantity, copy.id,\n" +
+        String query = "select book.id, book.name, book.description, book.page_quantity, orders.take_date,\n" +
+                " orders.return_date,\n" +
+                " orders.deadline_date,  copy.id,\n" +
             "            copy.publication_year, copy.publishing_house, copy.available\n" +
             "from orders left join user on user.id = orders.reader_id\n" +
             "\t\t\tleft join copy on orders.copy_id = copy.id\n" +
@@ -92,7 +119,11 @@ public class CopyDaoImpl implements CopyDao {
             while (rs.next()) {
                 book = new Book();
                 copy = new Copy();
+                orders = new Orders();
 
+                orders.setReturnDate(rs.getDate("orders.return_date"));
+                orders.setTakeDate(rs.getDate("orders.take_date"));
+                orders.setDeadlineDate(rs.getDate("orders.deadline_date"));
                 book.setId(rs.getInt("book.id"));
                 book.setName(rs.getString("book.name"));
                 book.setDescription(rs.getString("book.description"));
@@ -114,15 +145,15 @@ public class CopyDaoImpl implements CopyDao {
     }
 
     @Override
-    public Map<Copy, Integer> getCountOfCopiesOrdersByBookId(int bookId) {
+    public List<Copy> getAllCopiesWithOrdersCountByBookId(int bookId) {
         Copy copy;
-        int copyOrdersCount;
-        Map<Copy, Integer> countOrdersForCopies = new HashMap<>();
+        List<Copy> copies = new ArrayList<>();
+
         String query = "select count(orders.copy_id) as copyOrdersCount, copy.id, \n" +
-            "\tcopy.publication_year, copy.publishing_house, copy.available\n" +
-            "from orders left join copy on copy.id = orders.copy_id\n" +
-            "where orders.book_id = ?\n" +
-            "group by orders.copy_id";
+            "copy.publication_year, copy.publishing_house, copy.available\n" +
+            "from copy left join orders on copy.id = orders.copy_id\n" +
+            "where copy.book_id = ?\n" +
+            "group by copy.id";
         try (Connection con = DBConnection.getDataSource().getConnection()) {
             PreparedStatement pst = con.prepareStatement(query);
             pst.setInt(1, bookId);
@@ -130,23 +161,23 @@ public class CopyDaoImpl implements CopyDao {
             while (rs.next()) {
                 copy = new Copy();
 
-                copyOrdersCount = rs.getInt("copyOrdersCount");
+                copy.setOrdersQuantity(rs.getInt("copyOrdersCount"));
                 copy.setId(rs.getInt("copy.id"));
                 copy.setPublicationYear(rs.getInt("copy.publication_year"));
                 copy.setPublishingHouse(rs.getString("copy.publishing_house"));
                 copy.setAvailable(rs.getBoolean("copy.available"));
 
-                countOrdersForCopies.put(copy, copyOrdersCount);
+                copies.add(copy);
             }
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
 
-        return countOrdersForCopies;
+        return copies;
     }
 
     @Override
-    public boolean changeCopyAvailability(Copy copy, boolean toAvailable) {
+    public boolean changeCopyAvailability(int copyId, boolean toAvailable) {
         String query = "update copy\n" +
             "set available = ?\n" +
             "where id = ?";
@@ -154,7 +185,7 @@ public class CopyDaoImpl implements CopyDao {
             PreparedStatement pst = con.prepareStatement(query);
 
             pst.setInt(1, toAvailable ? 1 : 0);
-            pst.setInt(2, copy.getId());
+            pst.setInt(2, /*copy.getId()*/copyId);
 
             int rowsAffected = pst.executeUpdate();
             if (rowsAffected == 1) {
@@ -163,6 +194,22 @@ public class CopyDaoImpl implements CopyDao {
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
+
+        String queryupdate = "update orders\n" +
+                "set return_date = CURRENT_TIMESTAMP\n" +
+                "where copy_id = ? AND return_date iS NULL";
+        try (Connection con = DBConnection.getDataSource().getConnection()) {
+            PreparedStatement pst = con.prepareStatement(queryupdate);
+            pst.setInt(1,copyId);
+
+            int rowsAffected = pst.executeUpdate();
+            if (rowsAffected == 1) {
+                return true;
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+
         return false;
     }
 
@@ -172,11 +219,11 @@ public class CopyDaoImpl implements CopyDao {
         Copy copy = new Copy();
         ArrayList<Copy> copyArrayList = new ArrayList<>();
         String query = "Select \n" +
-                "\t\tDISTINCT B.id, B.name, B.Description, page_quantity, C.publication_year, C.publishing_house \n" +
-                "from book AS B \n" +
-                "\t\tleft join copy As C on C.book_id = B.ID\n" +
-                "WHERE\n" +
-                "\tC.publication_year BETWEEN (convert(?, datetime) AND convert(?, date))";
+            "\t\tDISTINCT B.id, B.name, B.Description, page_quantity, C.publication_year, C.publishing_house \n" +
+            "from book AS B \n" +
+            "\t\tleft join copy As C on C.book_id = B.ID\n" +
+            "WHERE\n" +
+            "\tC.publication_year BETWEEN (convert(?, datetime) AND convert(?, date))";
         try (Connection con = DBConnection.getDataSource().getConnection()) {
             PreparedStatement pst = con.prepareStatement(query);
             pst.setDate(1, datefrom);
@@ -209,12 +256,12 @@ public class CopyDaoImpl implements CopyDao {
         Copy copy = new Copy();
         ArrayList<Copy> copyArrayList = new ArrayList<>();
         String query = "Select \n" +
-                "\t\tName, available\n" +
-                "from \n" +
-                "\tbook \n" +
-                "\t\tleft join copy  On book_id = id\n" +
-                "WHERE \n" +
-                "     book_id = ? ";
+            "\t\tName, available\n" +
+            "from \n" +
+            "\tbook \n" +
+            "\t\tleft join copy  On book_id = id\n" +
+            "WHERE \n" +
+            "     book_id = ? ";
         try (Connection con = DBConnection.getDataSource().getConnection()) {
             PreparedStatement pst = con.prepareStatement(query);
             pst.setInt(1, bookID.getId());
@@ -237,6 +284,5 @@ public class CopyDaoImpl implements CopyDao {
         }
         return copyArrayList;
     }
-
 
 }

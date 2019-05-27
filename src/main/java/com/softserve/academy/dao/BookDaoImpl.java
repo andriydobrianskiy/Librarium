@@ -7,10 +7,8 @@ import com.softserve.academy.connectDatabase.DBConnection;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.Date;
+import java.util.*;
 
 public class BookDaoImpl implements BookDao {
     private static final Logger LOGGER = Logger.getLogger(BookDaoImpl.class);
@@ -66,6 +64,29 @@ public class BookDaoImpl implements BookDao {
         }
 
         return bookArrayList;
+    }
+
+    @Override
+    public Book getBookById(int bookId) {
+        Book book = new Book();
+        String query = "select name, description, page_quantity\n" +
+            "from book\n" +
+            "where id = ?";
+        try (Connection con = DBConnection.getDataSource().getConnection()) {
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setInt(1, bookId);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                book.setId(bookId);
+                book.setName(rs.getString("name"));
+                book.setDescription(rs.getString("description"));
+                book.setPageQuantity(rs.getInt("page_quantity"));
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+
+        return book;
     }
 
     @Override
@@ -179,16 +200,15 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public Map<Book, Integer> getOrderedListOfBooksInPeriod(Date startDate, Date endDate, boolean sortAsc) {
+    public List<Book> getOrderedListOfBooksInPeriod(Date startDate, Date endDate, boolean sortAsc) {
         Book book;
-        int bookCount;
-        Map<Book, Integer> countBooksInPeriod = new HashMap<>();
+        List<Book> orderedBooks = new ArrayList<>();
 
         String query = "select count(book_id) as booksQuantity, " +
-            "book.id, book.name, book.description, book.page_quantity" +
-            "from orders left join book on book.id = orders.book_id" +
-            "where orders.take_date Between (? and ?)" +
-            "Group by orders.book_ID" +
+            "book.id, book.name, book.description, book.page_quantity " +
+            "from orders left join book on book.id = orders.book_id " +
+            "where orders.take_date Between ? and ? " +
+            "Group by orders.book_ID " +
             "Order by COUNT(book_id) ";
         if (sortAsc) {
             query += "ASC";
@@ -197,23 +217,24 @@ public class BookDaoImpl implements BookDao {
         }
         try (Connection con = DBConnection.getDataSource().getConnection()) {
             PreparedStatement pst = con.prepareStatement(query);
-            pst.setDate(1, startDate);
-            pst.setDate(2, endDate);
+            pst.setTimestamp(1, new java.sql.Timestamp(startDate.getTime()));
+            pst.setTimestamp(2, new java.sql.Timestamp(endDate.getTime()));
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 book = new Book();
-                bookCount = rs.getInt("booksQuantity");
+                book.setOrdersQuantity(rs.getInt("booksQuantity"));
                 book.setId(rs.getInt("book.id"));
                 book.setName(rs.getString("book.name"));
                 book.setDescription(rs.getString("book.description"));
                 book.setPageQuantity(rs.getInt("book.page_quantity"));
-                countBooksInPeriod.put(book, bookCount);
+
+                orderedBooks.add(book);
             }
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
 
-        return countBooksInPeriod;
+        return orderedBooks;
     }
 
     @Override
@@ -221,12 +242,12 @@ public class BookDaoImpl implements BookDao {
         Book book = new Book();
         ArrayList<Book> bookArrayList = new ArrayList<>();
         String query = "Select\n" +
-                "\t\tB.id, B.Name, B.Description, B.Page_Quantity, A.firstname, A.lastname\n" +
-                "from  book AS B\n" +
-                "               Left join bookauthor AS BA ON BA.book_id = B.id\n" +
-                "               Left JOIN author AS A ON A.id = BA.author_id\n" +
-                "WHERE" +
-                "  A.id = ?";
+            "\t\tB.id, B.Name, B.Description, B.Page_Quantity, A.firstname, A.lastname\n" +
+            "from  book AS B\n" +
+            "               Left join bookauthor AS BA ON BA.book_id = B.id\n" +
+            "               Left JOIN author AS A ON A.id = BA.author_id\n" +
+            "WHERE" +
+            "  A.id = ?";
         try (Connection con = DBConnection.getDataSource().getConnection()) {
             PreparedStatement pst = con.prepareStatement(query);
             pst.setInt(1, author.getId());
@@ -250,31 +271,46 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public Map<Book, Integer> getBookByUserAverageAge(Book book) {
-        Book booknew = new Book();
-        Map<Book, Integer> bookIntegerMap = new HashMap<>();
+    public int getBookByUserAverageAge(Book book) {
         int dayCount = 0;
-        String query = " Select \n" +
-                "\t\tROUND(AVG(datediff(convert(current_timestamp, date), CONVERT(birthday_date, date))), 0) AS dayCount, book.name \n" +
-                "from \n" +
-                "\tOrders \n" +
-                "\t\t\t\tleft join user  On user.id = reader_id\n" +
-                "left join book on book.id = orders.book_id " +
-                " WHERE \n" +
-                "      book_id = ?";
+
+        String query = "Select ROUND(AVG(datediff(convert(current_timestamp, date), CONVERT(birthday_date, date))), 0) AS dayCount\n" +
+            "from\n" +
+            "Orders\n" +
+            "left join user  On user.id = reader_id\n" +
+            "WHERE\n" +
+            "book_id = ?";
         try (Connection con = DBConnection.getDataSource().getConnection()) {
             PreparedStatement pst = con.prepareStatement(query);
             pst.setInt(1, book.getId());
             ResultSet rs = pst.executeQuery();
-            while (rs.next()) {
+            if (rs.next()) {
                 dayCount = (rs.getInt("dayCount"));
-                booknew.setName(rs.getString("book.name"));
-                bookIntegerMap.put(booknew, dayCount);
             }
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
-        return bookIntegerMap;
+
+        return dayCount;
+    }
+
+    @Override
+    public int getCountBooksPublishingInPeriodOfIndependence(int year) {
+        String query = "SELECT DISTINCT book_id FROM copy WHERE publication_year >=?";
+        int count = 0;
+        try (Connection con = DBConnection.getDataSource().getConnection()) {
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setInt(1, year);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                count++;
+            }
+
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return count;
     }
 
 }

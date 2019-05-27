@@ -6,20 +6,20 @@ import com.softserve.academy.Entity.User;
 
 import java.sql.Date;
 import java.util.List;
-import java.util.Map;
 
 public interface CopyDao {
     List<Copy> getAllCopiesByBookId(int bookId);
 
     boolean insertCopy(Copy copy);
 
+   // Copy getCopyByID (String copyid);
     List<Copy> getAllCopiesByUser(User user);
 
-    Map<Copy, Integer> getCountOfCopiesOrdersByBookId(int bookId);
+    List<Copy> getAllCopiesWithOrdersCountByBookId(int bookId);
 
-    boolean changeCopyAvailability(Copy copy, boolean toAvailable);
+    boolean changeCopyAvailability(int copyId, boolean toAvailable);
 
-    List<Copy> getCopyByBook (Date datefrom, Date dateto);
+    List<Copy> getCopyByBook(Date datefrom, Date dateto);
 
     List<Copy> getCopyCountisEmty(Book book);
 }
