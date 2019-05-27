@@ -1,6 +1,7 @@
 package com.softserve.academy.Entity;
 
 import java.sql.Date;
+import java.util.List;
 
 /**
  * Class representing Book table in the Librarium database
@@ -14,6 +15,8 @@ public class Book {
     private String name;
     private String description;
     private int pageQuantity;
+    private String imageUrl;
+    private List<Author> authors;
 
     public Book() {
     }
@@ -66,6 +69,22 @@ public class Book {
         this.pageQuantity = pageQuantity;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public List<Author> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(List<Author> authors) {
+        this.authors = authors;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -92,7 +111,13 @@ public class Book {
         if (name != null ? !name.equals(book.name) : book.name != null) {
             return false;
         }
-        return description != null ? description.equals(book.description) : book.description == null;
+        if (description != null ? !description.equals(book.description) : book.description != null) {
+            return false;
+        }
+        if (imageUrl != null ? !imageUrl.equals(book.imageUrl) : book.imageUrl != null) {
+            return false;
+        }
+        return authors != null ? authors.equals(book.authors) : book.authors == null;
     }
 
     @Override
@@ -103,6 +128,8 @@ public class Book {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + pageQuantity;
+        result = 31 * result + (imageUrl != null ? imageUrl.hashCode() : 0);
+        result = 31 * result + (authors != null ? authors.hashCode() : 0);
         return result;
     }
 

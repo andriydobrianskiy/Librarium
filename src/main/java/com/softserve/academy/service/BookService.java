@@ -25,4 +25,6 @@ public interface BookService {
 
     Map<Book, Integer> getMostUnpopularBooksInPeriod(Date startDate, Date endDate)
         throws IllegalArgumentException;
+
+    int getCountBooksPublishingInPeriodOfIndependence(int year);
 }
