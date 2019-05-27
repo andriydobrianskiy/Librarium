@@ -14,7 +14,10 @@
                    href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
                 <a href="${pageContext.request.contextPath}/" class="w3-bar-item w3-button w3-teal"><i class="fa fa-home w3-margin-right"></i>Home</a>
                 <a href="${pageContext.request.contextPath}/books" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Books</a>
-                <a href="users" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Users</a>
+                <a href="${pageContext.request.contextPath}/users" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Users</a>
+
+                <a href="searchPage" class="w3-bar-item w3-button w3-right w3-hover-white" title="Search">
+                    <img src="${pageContext.request.contextPath}/resources/images/icons8-google-web-search-30.jpg"></a>
 
                 <c:if test="${empty sessionScope.user}">
                     <button type="button" class="w3-bar-item w3-button w3-right w3-hide-small w3-hover-white" data-toggle="modal" data-target="#loginModal">
@@ -23,10 +26,11 @@
                 </c:if>
                 <c:if test="${not empty sessionScope.user}">
                     <a href="${pageContext.request.contextPath}/logout" class="w3-bar-item w3-button w3-right w3-hide-small w3-hover-white">Logout</a>
+                    <a class="w3-bar-item w3-right w3-hide-small">
+                        <c:out value="${sessionScope.user.userName}"/> - <c:out value="${sessionScope.user.contact_type_id.name}"/>
+                    </a>
                 </c:if>
 
-                <a href="searchPage" class="w3-bar-item w3-button w3-right w3-hover-white" title="Search">
-                    <img src="${pageContext.request.contextPath}/resources/images/icons8-google-web-search-30.jpg"></a>
             </div>
 
         </div>
