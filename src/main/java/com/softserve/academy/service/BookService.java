@@ -24,4 +24,6 @@ public interface BookService {
         throws IllegalArgumentException;
 
     int getUserAverageAgeByBookId(Book book) throws IllegalArgumentException;
+
+    int getCountBooksPublishingInPeriodOfIndependence(int year);
 }

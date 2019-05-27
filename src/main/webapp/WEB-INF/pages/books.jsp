@@ -10,7 +10,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/jQueryValidator.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/jQueryValidator.js"></script>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/w3.css">
     <style>
         #searchLine {
             padding: 20px;
@@ -18,14 +19,21 @@
         #configurator {
             margin: 20px;
             padding: 20px;
-            border: 1px solid #ededed;
+            border: 1px solid rgba(111, 111, 111, 0.76);
             border-radius: 5px;
         }
     </style>
 </head>
-<body>
+<body style="background-image: url('${pageContext.request.contextPath}/resources/images/wallpaper.jpg');">
+
+<div id="header">
+<%-- include header and navigation bar --%>
+<jsp:include page="/WEB-INF/header.jsp"></jsp:include>
+</div>
+
 <div class="container-fluid">
-    <div class="row" id="configurator">
+
+    <div class="row" style="margin-top: 40px;" id="configurator">
         <div class="col-md-2">
             <input class="form-control" id="searchLine" type="text" placeholder="Search...">
         </div>
@@ -50,7 +58,7 @@
         <c:forEach items="${books}" var="book">
             <div class = "col-md-3 d-flex" id="booksCards">
                 <div class="card flex-fill">
-                    <img class="card-img-top img-fluid" src="${pageContext.request.contextPath}/images/${book.imageUrl}.jpg" alt="${book.name} image">
+                    <img class="card-img-top img-fluid" src="${pageContext.request.contextPath}/resources/images/${book.imageUrl}.jpg" alt="${book.name} image">
                     <div class="card-body">
                         <h4 class="card-title"><c:out value="${book.name}"/></h4>
                         <p class="card-text">by
@@ -92,5 +100,8 @@
     </c:if>
   });
 </script>
+
+<%-- include footer --%>
+<jsp:include page="/WEB-INF/footer.jsp"></jsp:include>
 </body>
 </html>

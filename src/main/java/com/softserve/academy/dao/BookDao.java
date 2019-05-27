@@ -29,4 +29,6 @@ public interface BookDao {
     List<Book> getBooksByAuthors(Author author);
 
     int getBookByUserAverageAge(Book book);
+
+    int getCountBooksPublishingInPeriodOfIndependence(int year);
 }

@@ -161,4 +161,12 @@ public class BookServiceImpl implements BookService {
         }
         return BOOK_DAO.getBookByUserAverageAge(book) / 365;
     }
+
+    @Override
+    public int getCountBooksPublishingInPeriodOfIndependence(int year) {
+        if (year < 0) {
+            throw new IllegalArgumentException("Year is not valid");
+        }
+        return BOOK_DAO.getCountBooksPublishingInPeriodOfIndependence(year);
+    }
 }

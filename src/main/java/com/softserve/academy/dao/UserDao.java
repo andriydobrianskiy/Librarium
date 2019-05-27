@@ -18,6 +18,8 @@ public interface UserDao {
 
     int getUserStatisticAverageAge();
 
+    int getUserAverageTimeOfUsingLibrary();
+
     Map<User, Integer> getUserStatisticCreateAt(boolean sortAsc);
 
     int getUserAverageNumber(Date dateFrom, Date dateTo);

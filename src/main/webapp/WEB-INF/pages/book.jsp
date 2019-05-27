@@ -11,17 +11,24 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/jQueryValidator.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/jQueryValidator.js"></script>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/w3.css">
     <style>
         .bookStatistics {
             font-size: 21px;
         }
     </style>
 </head>
-<body style="background-image: url('${pageContext.request.contextPath}/images/wallpaper.jpg');">
+<body style="background-image: url('${pageContext.request.contextPath}/resources/images/wallpaper.jpg');">
+
+<div id="header">
+<%-- include header and navigation bar --%>
+<jsp:include page="/WEB-INF/header.jsp"></jsp:include>
+</div>
+
 <c:if test="${empty error}">
 
-    <div class="jumbotron jumbotron-fluid">
+    <div class="jumbotron jumbotron-fluid" style="margin-top: 20px;">
         <div class="container">
             <h1><c:out value="${book.name}"/></h1>
             <p>
@@ -36,7 +43,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class = "col-md-4" >
-                <img class="img-fluid rounded" src="${pageContext.request.contextPath}/images/${book.imageUrl}.jpg" alt="${book.name} image">
+                <img class="img-fluid rounded" src="${pageContext.request.contextPath}/resources/images/${book.imageUrl}.jpg" alt="${book.name} image">
             </div>
             <div class = "col-md-8" >
                 <h2 class="text-center">Description</h2>
@@ -145,5 +152,8 @@
     <a href="${pageContext.request.contextPath}/books" class="btn btn-primary">Go back</a>
 </c:if>
 
+
+<%-- include footer --%>
+<jsp:include page="/WEB-INF/footer.jsp"></jsp:include>
 </body>
 </html>

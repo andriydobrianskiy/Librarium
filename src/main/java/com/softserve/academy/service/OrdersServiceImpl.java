@@ -43,4 +43,9 @@ public class OrdersServiceImpl implements OrdersService {
         }
         return false;
     }
+
+    @Override
+    public int getQuantityOfOrdersInAllPeriod() {
+        return ORDERS_DAO.getQuantityOfOrdersInAllPeriod();
+    }
 }

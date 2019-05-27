@@ -7,6 +7,7 @@ import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
 
+
 public class OrdersDaoImpl implements OrdersDao {
 
     private static final Logger LOGGER = Logger.getLogger(OrdersDaoImpl.class);
@@ -34,6 +35,7 @@ public class OrdersDaoImpl implements OrdersDao {
         return false;
     }
 
+    @Override
     public Map<Integer, Integer> getAllBooksOrdersCount() {
         Map<Integer, Integer> ordersCount = new HashMap<>();
 
@@ -53,6 +55,7 @@ public class OrdersDaoImpl implements OrdersDao {
         return ordersCount;
     }
 
+    @Override
     public int getOrdersCountByBookId(int bookId) {
         int ordersCount = 0;
 
@@ -73,6 +76,7 @@ public class OrdersDaoImpl implements OrdersDao {
         return ordersCount;
     }
 
+    @Override
     public int getMaxOrdersCount() {
         int maximum = 0;
         String query = "select max(ordersQuantity) as maximum\n" +
@@ -92,4 +96,21 @@ public class OrdersDaoImpl implements OrdersDao {
 
         return maximum;
     }
+
+    @Override
+    public int getQuantityOfOrdersInAllPeriod() {
+        int quantityOfOrders = 0;
+        String query = "SELECT count(id) as quantity FROM orders";
+        try (Connection con = DBConnection.getDataSource().getConnection()) {
+            PreparedStatement pst = con.prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                quantityOfOrders = (rs.getInt("quantity"));
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return quantityOfOrders;
+    }
+
 }

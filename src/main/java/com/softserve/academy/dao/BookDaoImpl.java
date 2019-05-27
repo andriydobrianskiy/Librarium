@@ -293,4 +293,24 @@ public class BookDaoImpl implements BookDao {
 
         return dayCount;
     }
+
+    @Override
+    public int getCountBooksPublishingInPeriodOfIndependence(int year) {
+        String query = "SELECT DISTINCT book_id FROM copy WHERE publication_year >=?";
+        int count = 0;
+        try (Connection con = DBConnection.getDataSource().getConnection()) {
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setInt(1, year);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                count++;
+            }
+
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return count;
+    }
+
 }

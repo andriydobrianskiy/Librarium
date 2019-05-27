@@ -12,4 +12,6 @@ public interface OrdersDao {
     int getOrdersCountByBookId(int bookId);
 
     int getMaxOrdersCount();
+
+    int getQuantityOfOrdersInAllPeriod();
 }
