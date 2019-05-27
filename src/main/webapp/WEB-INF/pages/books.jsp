@@ -15,23 +15,23 @@
 <div class="container-fluid">
     <div class="row">
         <c:forEach items="${books}" var="book">
-            <div class = "col-md-3 d-flex" >
-                <div class="card flex-fill">
-                    <img class="card-img-top" src="${pageContext.request.contextPath}/images/${book.imageUrl}.jpg" alt="Card image">
-                    <div class="card-body">
-                        <h4 class="card-title"><c:out value="${book.name}"/></h4>
-                        <p class="card-text">by
-                            <c:forEach items="${book.authors}" var="author">
-                                <c:out value="${author.firstName} ${author.lastName}"/>
-                            </c:forEach>
-                        </p>
-                    </div>
-                    <div class="card-footer">
-                        <a href="#" class="btn btn-primary stretched-link">See detailed info</a>
-                    </div>
+        <div class = "col-md-3 d-flex" >
+            <div class="card flex-fill">
+                <img class="card-img-top" src="${pageContext.request.contextPath}/images/${book.imageUrl}.jpg" alt="Card image">
+                <div class="card-body">
+                    <h4 class="card-title"><c:out value="${book.name}"/></h4>
+                    <p class="card-text">by
+                        <c:forEach items="${book.authors}" var="author">
+                            <c:out value="${author.firstName} ${author.lastName}"/>
+                        </c:forEach>
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <a href="#" class="btn btn-primary stretched-link">See detailed info</a>
                 </div>
             </div>
-        </c:forEach>
+        </div>
+    </c:forEach>
     </div>
 </div>
 </body>

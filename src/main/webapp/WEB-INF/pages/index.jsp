@@ -8,29 +8,9 @@
 </head>
 
 <body id="homePage">
-<div id="header">
 
-    <!-- Navbar -->
-    <div class="w3-top">
-        <div class="w3-bar w3-theme-d2 w3-left-align">
-            <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-hover-white w3-theme-d2"
-               href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
-            <a href="#" class="w3-bar-item w3-button w3-teal"><i class="fa fa-home w3-margin-right"></i>Home</a>
-            <a href="books" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Books</a>
-            <a href="users" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Users</a>
-
-            <a href="searchPage" class="w3-bar-item w3-button w3-right w3-hover-white" title="Search">
-                <img src="../../resources/images/icons8-google-web-search-30.jpg"></a>
-        </div>
-
-    </div>
-
-    <!-- Image Header -->
-    <div class="w3-display-container w3-animate-opacity">
-        <img src="../../resources/images/librarium-home-page-demo.jpg" alt="boat"
-             style="width:100%;min-height:350px;max-height:600px;">
-    </div>
-</div>
+<%-- include header and navigation bar --%>
+<jsp:include page="/WEB-INF/header.jsp"></jsp:include>
 
 <!-- Work Row -->
 <div class="w3-row-padding w3-padding-large w3-theme-l5" id="work">
@@ -56,7 +36,6 @@
     </div>
 </div>
 
-
 <!-- The Contacts Section -->
 <div class="w3-container w3-theme-l3 w3-padding-64"
      style="width: 100%" id="contacts">
@@ -80,17 +59,8 @@
 
 </div>
 
-
-</div>
-
-
-<div id="footer">
-    <%--<jsp:include page="footer.jsp"/>--%>
-    <div style="text-align: center; background-color: black;
-  color: white; padding: 10px;">
-        <p>SoftServe 2019</p>
-    </div>
-</div>
+<%-- include footer --%>
+<jsp:include page="/WEB-INF/footer.jsp"></jsp:include>
 
 </body>
 </html>
