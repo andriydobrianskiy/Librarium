@@ -14,10 +14,13 @@
                 <a href="${pageContext.request.contextPath}/books" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Books</a>
                 <a href="users" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Users</a>
 
+                <button type="button" class="w3-bar-item w3-button w3-right w3-hide-small w3-hover-white" data-toggle="modal" data-target="#loginModal">
+                    Login
+                </button>
+
                 <a href="searchPage" class="w3-bar-item w3-button w3-right w3-hover-white" title="Search">
                     <img src="${pageContext.request.contextPath}/resources/images/icons8-google-web-search-30.jpg"></a>
             </div>
 
         </div>
-
-
+<jsp:include page="loginModal.jsp"></jsp:include>
