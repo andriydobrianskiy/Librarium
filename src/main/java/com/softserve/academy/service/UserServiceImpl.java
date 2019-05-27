@@ -40,4 +40,21 @@ public class UserServiceImpl implements UserService {
         return USER_DAO.getUserAverageTimeOfUsingLibrary();
 
     }
+
+    @Override
+    public User getRegisteredUser(String username, String password) throws IllegalArgumentException {
+        if ((username == null) || (password == null) ||
+            (username.isEmpty()) || (password.isEmpty())) {
+            throw new IllegalArgumentException("User credentials is empty");
+        }
+        User user = USER_DAO.getUserByUsername(username);
+        if (user.getId() == 0) {
+            throw new IllegalArgumentException("User with that username is not found");
+        }
+        if (user.getPassword().equals(password)) {
+            return user;
+        } else {
+            throw new IllegalArgumentException("Password is not valid");
+        }
+    }
 }

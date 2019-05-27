@@ -2,6 +2,7 @@ package com.softserve.academy.dao;
 
 import com.softserve.academy.Entity.Author;
 import com.softserve.academy.Entity.User;
+import com.softserve.academy.Entity.UserType;
 import com.softserve.academy.connectDatabase.DBConnection;
 import org.apache.log4j.Logger;
 
@@ -266,6 +267,40 @@ public class UserDaoImpl implements UserDao {
             LOGGER.error(e.getMessage(), e);
         }
         return dayCount;
+    }
+
+    @Override
+    public User getUserByUsername(String username) {
+        User user = new User();
+        String query = "select user.id, user.firstname, user.lastname, user.password, user.phone, \n" +
+            "\t\tuser.address, user.birthday_date, usertype.name\n" +
+            "from user left join usertype on user.contact_type_id = usertype.id\n" +
+            "where user.username = ?";
+
+        try (Connection con = DBConnection.getDataSource().getConnection()) {
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setString(1, username);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                user.setId(rs.getInt("user.id"));
+                user.setFirstname(rs.getString("user.firstname"));
+                user.setLastName(rs.getString("user.lastname"));
+                user.setUserName(username);
+                user.setPassword(rs.getString("user.password"));
+                user.setPhone(rs.getString("user.phone"));
+                user.setAddress(rs.getString("user.address"));
+                user.setBirthday_date(rs.getDate("user.birthday_date"));
+
+                UserType userType = new UserType();
+                userType.setName(rs.getString("usertype.name"));
+
+                user.setContact_type_id(userType);
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+
+        return user;
     }
 }
 

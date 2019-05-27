@@ -1,6 +1,7 @@
 package com.softserve.academy.controller;
 
 import com.softserve.academy.Entity.Book;
+import com.softserve.academy.Entity.User;
 import com.softserve.academy.service.*;
 import org.apache.log4j.Logger;
 
@@ -23,12 +24,15 @@ public class BookServlet extends HttpServlet {
         String copy_id = request.getParameter("copy_id");
         String reader_id = request.getParameter("reader_select");
         String book_id = request.getParameter("book_id");
-        // TODO get user(librarian) id from session - for now id = 4
-        try {
-            boolean success = ORDERS_SERVICE.orderCopy(copy_id, reader_id, book_id, 4);
-            LOGGER.debug("Ordering copy is successful: " + success);
-        } catch (IllegalArgumentException e) {
-            LOGGER.error(e.getMessage(), e);
+
+        User user = (User) request.getSession().getAttribute("user");
+        if (user != null) {
+            try {
+                boolean success = ORDERS_SERVICE.orderCopy(copy_id, reader_id, book_id, user.getId());
+                LOGGER.debug("Ordering copy is successful: " + success);
+            } catch (IllegalArgumentException e) {
+                LOGGER.error(e.getMessage(), e);
+            }
         }
 
         doGet(request, response);
@@ -57,8 +61,8 @@ public class BookServlet extends HttpServlet {
 
         request.setAttribute("users", USER_SERVICE.getAllUsers());
 
-        // TODO check user(librarian) role from session
-        request.setAttribute("user", "librarian");
+
+        request.setAttribute("user", request.getSession().getAttribute("user"));
 
         request.getRequestDispatcher("/WEB-INF/pages/book.jsp").forward(request, response);
     }
