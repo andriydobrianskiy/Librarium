@@ -3,14 +3,27 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <link rel="stylesheet" type="text/css" href="resources/css/w3.css">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/w3.css">
+    <script src="${pageContext.request.contextPath}/resources/js/jQueryValidator.js"></script>
     <title>Librarium</title>
 </head>
 
 <body id="homePage">
-
+<div id="header">
 <%-- include header and navigation bar --%>
 <jsp:include page="/WEB-INF/header.jsp"></jsp:include>
+    <!-- Image Header -->
+    <div class="w3-display-container w3-animate-opacity">
+        <img src="${pageContext.request.contextPath}/resources/images/librarium-home-page-demo.jpg" alt="boat"
+             style="width:100%;min-height:350px;max-height:600px;">
+    </div>
+</div>
 
 <!-- Work Row -->
 <div class="w3-row-padding w3-padding-large w3-theme-l5" id="work">

@@ -1,6 +1,5 @@
 package com.softserve.academy.controller;
 
-import com.softserve.academy.connectDatabase.DBConnection;
 import com.softserve.academy.service.*;
 
 import javax.servlet.ServletException;
@@ -22,10 +21,7 @@ public class MainController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-        DBConnection dbConnection = new DBConnection();
-        dbConnection.connect();
-
-        request.setAttribute("BooksQuantityInIndependencePeriod",
+                request.setAttribute("BooksQuantityInIndependencePeriod",
             BOOK_SERVICE.getCountBooksPublishingInPeriodOfIndependence(1991));
         request.setAttribute("AverageReaderAge", USER_SERVICE.getUserStatisticAverageAge());
         request.setAttribute("QuantityOfOrdersInAllPeriod", ORDERS_SERVICE.getQuantityOfOrdersInAllPeriod());

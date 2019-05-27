@@ -22,7 +22,7 @@ public interface UserDao {
 
     Map<User, Integer> getUserStatisticCreateAt(boolean sortAsc);
 
-    int getUserAverageNumber (Date dateFrom, Date dateTo);
+    int getUserAverageNumber(Date dateFrom, Date dateTo);
 
     int getAuthorByUserAverageAge(Author author);
 }

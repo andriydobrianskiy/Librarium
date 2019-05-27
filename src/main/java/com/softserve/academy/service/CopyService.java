@@ -5,7 +5,6 @@ import com.softserve.academy.Entity.Copy;
 import com.softserve.academy.Entity.User;
 
 import java.util.List;
-import java.util.Map;
 
 public interface CopyService {
     List<Copy> getAllCopiesByBook(Book book) throws IllegalArgumentException;
@@ -14,9 +13,9 @@ public interface CopyService {
 
     boolean insertCopy(Copy copy) throws IllegalArgumentException;
 
-    Map<Copy, Integer> getCountOfCopiesOrdersByBook(Book book) throws IllegalArgumentException;
+    List<Copy> getAllCopiesWithOrdersCountByBook(Book book) throws IllegalArgumentException;
 
-    boolean orderCopy(Copy copy) throws IllegalArgumentException;
+    boolean orderCopy(int copyId) throws IllegalArgumentException;
 
-    boolean returnCopy(Copy copy) throws IllegalArgumentException;
+    boolean returnCopy(int copyId) throws IllegalArgumentException;
 }

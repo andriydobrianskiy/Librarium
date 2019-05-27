@@ -22,7 +22,7 @@ public class UserDaoImpl implements UserDao {
         User user;
         ArrayList<User> userArrayList = new ArrayList<>();
         String query = "select id, firstname, lastName," +
-            "phone, address, birthday_date" +
+            "phone, address, birthday_date " +
             "from user";
 
         try (Connection con = DBConnection.getDataSource().getConnection()) {
@@ -33,7 +33,7 @@ public class UserDaoImpl implements UserDao {
                 user = new User();
                 user.setId(rs.getInt("id"));
                 user.setFirstname(rs.getString("firstname"));
-                user.setLastName(rs.getString("lastname"));
+                user.setLastName(rs.getString("lastName"));
                 user.setPhone(rs.getString("phone"));
                 user.setAddress(rs.getString("address"));
                 user.setBirthday_date(rs.getDate("birthday_date"));
@@ -251,7 +251,7 @@ public class UserDaoImpl implements UserDao {
             "\tOrders \n" +
             "\t\t\t\tleft join user On user.id = orders.reader_id\n" +
             "                left join bookauthor On bookauthor.book_id = orders.Book_id\n" +
-            "                left join author ON author.id = .author_id\n" +
+            "                left join author ON author.id = bookauthor.author_id\n" +
             "                 \n" +
             " WHERE \n" +
             "      author.id = ?";

@@ -15,6 +15,7 @@ public class Copy {
     private String publishingHouse;
     private boolean available;
     private Book bookId;
+    private int ordersQuantity;
 
     public int getId() {
         return id;
@@ -72,6 +73,14 @@ public class Copy {
         this.bookId = bookId;
     }
 
+    public int getOrdersQuantity() {
+        return ordersQuantity;
+    }
+
+    public void setOrdersQuantity(int ordersQuantity) {
+        this.ordersQuantity = ordersQuantity;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -90,6 +99,9 @@ public class Copy {
             return false;
         }
         if (available != copy.available) {
+            return false;
+        }
+        if (ordersQuantity != copy.ordersQuantity) {
             return false;
         }
         if (createdAt != null ? !createdAt.equals(copy.createdAt) : copy.createdAt != null) {
@@ -113,6 +125,7 @@ public class Copy {
         result = 31 * result + (publishingHouse != null ? publishingHouse.hashCode() : 0);
         result = 31 * result + (available ? 1 : 0);
         result = 31 * result + (bookId != null ? bookId.hashCode() : 0);
+        result = 31 * result + ordersQuantity;
         return result;
     }
 
