@@ -23,12 +23,6 @@ public class CopyServiceImpl implements CopyService {
         return COPY_DAO.getAllCopiesByBookId(book.getId());
     }
 
-   /* @Override
-    public Copy getCopyByID(String copyid) {
-
-        return COPY_DAO.getCopyByID(copyid);
-    }*/
-
     @Override
     public List<Copy> getAllCopiesByUser(User user) throws IllegalArgumentException {
         if (user == null) {

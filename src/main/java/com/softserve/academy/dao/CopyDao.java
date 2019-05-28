@@ -12,7 +12,6 @@ public interface CopyDao {
 
     boolean insertCopy(Copy copy);
 
-   // Copy getCopyByID (String copyid);
     List<Copy> getAllCopiesByUser(User user);
 
     List<Copy> getAllCopiesWithOrdersCountByBookId(int bookId);

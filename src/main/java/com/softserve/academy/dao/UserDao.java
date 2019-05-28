@@ -27,4 +27,6 @@ public interface UserDao {
     int getUserAverageNumber(Date dateFrom, Date dateTo);
 
     int getAuthorByUserAverageAge(Author author);
+
+    User getUserByUsername(String username);
 }

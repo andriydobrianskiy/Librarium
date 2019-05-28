@@ -14,9 +14,11 @@ public interface UserService {
 
     List<Integer> getUsersAverageAgesForAuthors(List<Author> authors) throws IllegalArgumentException;
 
-    int getDaysOfUsingLibraryByUser (User user);
-
     int getUserStatisticAverageAge();
 
+    int getDaysOfUsingLibraryByUser (User user);
+
     int getUserAverageTimeOfUsingLibrary();
+
+    User getRegisteredUser(String username, String password) throws IllegalArgumentException;
 }

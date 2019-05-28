@@ -1,9 +1,7 @@
 package com.softserve.academy.dao;
 
-import com.mysql.cj.x.protobuf.MysqlxCrud;
 import com.softserve.academy.Entity.Book;
 import com.softserve.academy.Entity.Copy;
-import com.softserve.academy.Entity.Orders;
 import com.softserve.academy.Entity.User;
 import com.softserve.academy.connectDatabase.DBConnection;
 import org.apache.log4j.Logger;
@@ -74,39 +72,12 @@ public class CopyDaoImpl implements CopyDao {
         return false;
     }
 
-    /*@Override
-    public Copy getCopyByID(String copyid) {
-        Copy copy = null;
-        ArrayList<Copy> copyArrayList = new ArrayList<>();
-        String query = "Select id from copy where id = ?";
-        try (Connection con = DBConnection.getDataSource().getConnection()) {
-            PreparedStatement pst = con.prepareStatement(query);
-            pst.setInt(1, Integer.parseInt(copyid));
-            ResultSet rs = pst.executeQuery();
-            while (rs.next()) {
-
-                copy = new Copy();
-
-
-                copy.setId(rs.getInt("id"));
-
-            }
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage(), e);
-        }
-
-        return copy;
-    }*/
-
     @Override
     public List<Copy> getAllCopiesByUser(User user) {
         Book book;
         Copy copy;
-        Orders orders;
         ArrayList<Copy> copyArrayList = new ArrayList<>();
-        String query = "select book.id, book.name, book.description, book.page_quantity, orders.take_date,\n" +
-                " orders.return_date,\n" +
-                " orders.deadline_date,  copy.id,\n" +
+        String query = "select book.id, book.name, book.description, book.page_quantity, copy.id,\n" +
             "            copy.publication_year, copy.publishing_house, copy.available\n" +
             "from orders left join user on user.id = orders.reader_id\n" +
             "\t\t\tleft join copy on orders.copy_id = copy.id\n" +
@@ -119,11 +90,7 @@ public class CopyDaoImpl implements CopyDao {
             while (rs.next()) {
                 book = new Book();
                 copy = new Copy();
-                orders = new Orders();
 
-                orders.setReturnDate(rs.getDate("orders.return_date"));
-                orders.setTakeDate(rs.getDate("orders.take_date"));
-                orders.setDeadlineDate(rs.getDate("orders.deadline_date"));
                 book.setId(rs.getInt("book.id"));
                 book.setName(rs.getString("book.name"));
                 book.setDescription(rs.getString("book.description"));
@@ -209,7 +176,6 @@ public class CopyDaoImpl implements CopyDao {
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
-
         return false;
     }
 

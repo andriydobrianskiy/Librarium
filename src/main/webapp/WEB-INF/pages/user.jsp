@@ -51,10 +51,10 @@
     <strong>Phone:</strong> <c:out value="${user.phone}"/>
     </p>
     <p class="text-left bookStatistics">
-    <strong>address: </strong><c:out value="${user.address}"/> times
+    <strong>address: </strong><c:out value="${user.address}"/>
     </p>
         <p class="text-left bookStatistics">
-            <strong>Uses library services: </strong><c:out value="${daysOfUsingLibraryByUser}"/> times
+            <strong>Uses library services: </strong><c:out value="${daysOfUsingLibraryByUser}"/> days
         </p>
 
 

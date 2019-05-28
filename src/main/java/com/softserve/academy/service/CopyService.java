@@ -8,7 +8,6 @@ import java.util.List;
 
 public interface CopyService {
     List<Copy> getAllCopiesByBook(Book book) throws IllegalArgumentException;
-   // Copy getCopyByID (String copyid);
 
     List<Copy> getAllCopiesByUser(User user) throws IllegalArgumentException;
 
