@@ -302,5 +302,31 @@ public class UserDaoImpl implements UserDao {
 
         return user;
     }
+
+
+    @Override
+    public User getUserById(int userid) {
+        User user = new User();
+        String query = "select id,created_at, user_id, firstname, lastname, phone, address\n" +
+                "from user\n" +
+                "where id = ?";
+        try (Connection con = DBConnection.getDataSource().getConnection()) {
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setInt(1, userid);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                user.setId(userid);
+                user.setCreatedAt(rs.getDate("created_at"));
+                user.setFirstname(rs.getString("firstname"));
+                user.setLastName(rs.getString("lastname"));
+                user.setPhone(rs.getString("phone"));
+                user.setAddress(rs.getString("address"));
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+
+        return user;
+    }
 }
 

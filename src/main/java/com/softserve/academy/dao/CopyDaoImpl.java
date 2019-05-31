@@ -161,6 +161,21 @@ public class CopyDaoImpl implements CopyDao {
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
+
+        String queryupdate = "update orders\n" +
+                "set return_date = CURRENT_TIMESTAMP\n" +
+                "where copy_id = ? AND return_date iS NULL";
+        try (Connection con = DBConnection.getDataSource().getConnection()) {
+            PreparedStatement pst = con.prepareStatement(queryupdate);
+            pst.setInt(1,copyId);
+
+            int rowsAffected = pst.executeUpdate();
+            if (rowsAffected == 1) {
+                return true;
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
         return false;
     }
 
