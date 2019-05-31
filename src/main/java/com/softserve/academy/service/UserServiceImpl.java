@@ -57,6 +57,8 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("Password is not valid");
         }
     }
+
+
     @Override
     public User getUserById(int userid) throws IllegalArgumentException {
         if (userid <= 0) {
@@ -77,4 +79,5 @@ public class UserServiceImpl implements UserService {
     public int getDaysOfUsingLibraryByUser(User user) {
         return USER_DAO.getDaysOfUsingLibraryByUser(user);
     }
+
 }
